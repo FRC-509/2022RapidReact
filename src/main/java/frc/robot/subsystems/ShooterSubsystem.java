@@ -12,7 +12,7 @@ import frc.robot.RobotContainer;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  private final WPI_TalonFX leftShooter = new WPI_TalonFX(7, "FastFD");
+  private final WPI_TalonFX leftShooter = new WPI_TalonFX(6, "FastFD");
   //private final WPI_TalonFX rightShooter = new WPI_TalonFX(6, "FastFD");
 
   public ShooterSubsystem() {}

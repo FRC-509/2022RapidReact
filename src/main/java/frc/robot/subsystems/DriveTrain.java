@@ -8,8 +8,14 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.SPI;
+//import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private CANSparkMax leftFront;
@@ -19,7 +25,14 @@ public class DriveTrain extends SubsystemBase {
   private CANSparkMax rightBack;
   private MotorControllerGroup rightGroup;
   private DifferentialDrive drive;
-  
+
+  //DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21));
+  //DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+
+  //PIDController leftPIDController = new PIDController(2.95, 0, 0);
+  //PIDController rightPIDController = new PIDController(2.95, 0, 0);
+
+  //AHRS gyro = new AHRS(SPI.Port.kMXP);
   public DriveTrain() {
     leftFront = new CANSparkMax(2, MotorType.kBrushed);
     //addChild("leftFront",(Sendable) leftFront);
@@ -49,7 +62,27 @@ public class DriveTrain extends SubsystemBase {
     drive.setExpiration(0.1);
     drive.setMaxOutput(1.0);
   }
+  /*
 
+  private Pose2d get2dHeading() {
+    return null;
+  }
+
+  public DifferentialDriveKinematics getKinematics() {
+    return kinematics;
+  }
+  
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-gyro.getAngle());
+  }
+  public PIDController getLeftPIDController() {
+    return leftPIDController;
+  }
+
+  public PIDController getRightPIDController() {
+    return rightPIDController;
+  }
+  */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -24,7 +24,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TankDrive;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -42,6 +47,7 @@ public class RobotContainer {
   public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final IntakeSpin m_intakeSpin = new IntakeSpin(m_intake,true);
   public final TankDrive m_tankDriveCMD = new TankDrive(m_driveTrain);
+  
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -88,6 +94,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    //TrajectoryConfig config = new TrajectoryConfig(
+    //    Units.feetToMeters(2.0), Units.feetToMeters(2.0));
+    //config.setKinematics(m_driveTrain.getKinematics());
     return m_chooser.getSelected();
   }
 }
