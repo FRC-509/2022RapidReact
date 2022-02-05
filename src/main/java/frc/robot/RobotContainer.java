@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.subsystems.DriveTrain;
@@ -42,7 +44,7 @@ public class RobotContainer {
   public final TankDrive m_tankDriveCMD = new TankDrive(m_driveTrain);
 
 
-  // SendableChooser<Command> m_chooser = new SendableChooser<>();
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,6 +53,10 @@ public class RobotContainer {
 
     m_driveTrain.setDefaultCommand(m_tankDriveCMD);
     m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
+
+    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+
+    SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
   /**
@@ -81,8 +87,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
     // An ExampleCommand will run in autonomous
-    // return m_chooser.getSelected();
+    return m_chooser.getSelected();
   }
 }
