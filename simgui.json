@@ -1,0 +1,94 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [2]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [4]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [5]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[100]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[100]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[100]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[100]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[255]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[255]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[255]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[255]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[7]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[7]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[7]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[7]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DriveTrain": "Subsystem",
+      "/LiveWindow/DriveTrain/Drive": "DifferentialDrive",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/ShooterSubsystem": "Subsystem",
+      "/LiveWindow/Ungrouped/MotorControllerGroup[1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon FX [7]": "Motor Controller"
+    }
+  }
+}
