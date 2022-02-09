@@ -47,8 +47,6 @@ public class RobotContainer {
   public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final IntakeSpin m_intakeSpin = new IntakeSpin(m_intake,true);
   public final TankDrive m_tankDriveCMD = new TankDrive(m_driveTrain);
-  
-
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -57,8 +55,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_driveTrain.setDefaultCommand(m_tankDriveCMD);
-    m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
+    // m_driveTrain.setDefaultCommand(m_tankDriveCMD);
+    // m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
 
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
@@ -77,13 +75,13 @@ public class RobotContainer {
     // a shoots, x spins intake forward, y spins intake backward
 
     JoystickButton A_BUTTON = new JoystickButton(m_logiController, 1);
-    A_BUTTON.whenPressed(new ShooterCommand(m_shooterSubsystem));
+    A_BUTTON.whenHeld(new ShooterCommand(m_shooterSubsystem));
 
     JoystickButton X_BUTTON = new JoystickButton(m_logiController, 3);
-    X_BUTTON.whenPressed(new IntakeSpin(m_intake, true));
+    X_BUTTON.whenHeld(new IntakeSpin(m_intake, true));
 
     JoystickButton Y_BUTTON = new JoystickButton(m_logiController, 4);
-    Y_BUTTON.whenPressed(new IntakeSpin(m_intake, false));
+    Y_BUTTON.whenHeld(new IntakeSpin(m_intake, false));
     
   }
   

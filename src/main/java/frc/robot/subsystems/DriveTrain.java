@@ -15,16 +15,18 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 //import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  private CANSparkMax leftFront;
-  private CANSparkMax leftBack;
-  private MotorControllerGroup leftGroup;
-  private CANSparkMax rightFront;
-  private CANSparkMax rightBack;
-  private MotorControllerGroup rightGroup;
-  private DifferentialDrive drive;
+  private WPI_TalonFX leftFront = new WPI_TalonFX(2);
+  private WPI_TalonFX leftBack = new WPI_TalonFX(3);
+  private MotorControllerGroup leftGroup = new MotorControllerGroup(leftFront, leftBack);;
+  private WPI_TalonFX rightFront = new WPI_TalonFX(5);
+  private WPI_TalonFX rightBack = new WPI_TalonFX(4);
+  private MotorControllerGroup rightGroup = new MotorControllerGroup(rightFront, rightBack);
+  private DifferentialDrive drive = new DifferentialDrive(leftGroup, rightGroup);
 
   //DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21));
   //DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
@@ -34,30 +36,11 @@ public class DriveTrain extends SubsystemBase {
 
   //AHRS gyro = new AHRS(SPI.Port.kMXP);
   public DriveTrain() {
-    leftFront = new CANSparkMax(2, MotorType.kBrushed);
-    //addChild("leftFront",(Sendable) leftFront);
     leftFront.setInverted(false);
-
-    leftBack = new CANSparkMax(3, MotorType.kBrushed);
-    //addChild("leftBack",(Sendable) leftBack);
     leftBack.setInverted(false);
-
-    leftGroup = new MotorControllerGroup(leftFront, leftBack);
-    addChild("leftGroup",leftGroup);
-
-
-    rightFront = new CANSparkMax(5, MotorType.kBrushed);
     rightFront.setInverted(true);
-
-    rightBack = new CANSparkMax(4, MotorType.kBrushed);
     rightBack.setInverted(true);
-
-    rightGroup = new MotorControllerGroup(rightFront, rightBack);
-    addChild("rightGroup",rightGroup);
-
-
-    drive = new DifferentialDrive(leftGroup, rightGroup);
-    addChild("Drive",drive);
+    
     drive.setSafetyEnabled(true);
     drive.setExpiration(0.1);
     drive.setMaxOutput(1.0);
@@ -95,4 +78,5 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double left, double right) {
     drive.tankDrive(left, right);
-  }}
+  }
+}

@@ -24,7 +24,8 @@ public class TankDrive extends CommandBase {
 
   @Override
   public void execute() {
-    m_driveTrain.drive(m_logiController.getRawAxis(1), m_logiController.getRawAxis(4));}
+    m_driveTrain.drive(m_logiController.getRawAxis(1), m_logiController.getRawAxis(4));
+  }
 
   @Override
   public void end(boolean interrupted) {
