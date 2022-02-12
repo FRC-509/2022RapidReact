@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -38,6 +40,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  public final Indexer m_indexer = new Indexer();
   public final Intake m_intake = new Intake();
   public final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
@@ -47,6 +50,8 @@ public class RobotContainer {
 
   private final Joystick l_stick = new Joystick(0);
   private final Joystick r_stick = new Joystick(1);
+
+  private final GenericHID m_logiController = new GenericHID(0);
 
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -78,19 +83,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     System.out.println("[RobotContainer::ConfigureButtonBindings] Configuring Button Bindings...");
-    GenericHID m_logiController = new GenericHID(0);
+    
+    // Elevator uses logitech controller and everything else uses joystick
     // a shoots, x spins intake forward, y spins intake backward
 
-    JoystickButton A_BUTTON = new JoystickButton(m_logiController, 1);
-    A_BUTTON.whenHeld(new ShooterCommand(m_shooterSubsystem));
+    JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
+    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(m_shooterSubsystem));
 
-    JoystickButton X_BUTTON = new JoystickButton(m_logiController, 3);
-    X_BUTTON.whenHeld(new IntakeSpin(m_intake, true));
+    JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
+    LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin(m_intake, true));
 
-    JoystickButton Y_BUTTON = new JoystickButton(m_logiController, 4);
-    Y_BUTTON.whenHeld(new IntakeSpin(m_intake, false));
-    
+    JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
+    LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(m_intake, false));
+
+    JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
+    RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand(m_indexer)); 
   }
+
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {

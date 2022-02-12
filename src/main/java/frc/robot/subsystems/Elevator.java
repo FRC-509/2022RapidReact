@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-    private final WPI_TalonFX theactualelevator = new WPI_TalonFX(14, "FastFD");
-    private final WPI_TalonFX armot = new WPI_TalonFX(15, "FastFD");
-    private final WPI_TalonFX armot2 = new WPI_TalonFX(13, "FastFD");
+    private final WPI_TalonFX elevatorMotor = new WPI_TalonFX(14, "FastFD");
+    private final WPI_TalonFX armMotor = new WPI_TalonFX(15, "FastFD");
+    private final WPI_TalonFX armMotor2 = new WPI_TalonFX(13, "FastFD");
 
-    private MotorControllerGroup leftGroup;
+    private MotorControllerGroup armGroup = new MotorControllerGroup(armMotor, armMotor2);
     
     public Elevator() {}
 
