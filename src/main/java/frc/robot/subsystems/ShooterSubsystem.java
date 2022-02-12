@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  private final WPI_TalonFX leftShooter = new WPI_TalonFX(6, "FastFD");
-  private final WPI_TalonFX rightShooter = new WPI_TalonFX(7, "FastFD");
+  private final WPI_TalonFX leftShooter = new WPI_TalonFX(10, "FastFD");
+  private final WPI_TalonFX rightShooter = new WPI_TalonFX(11, "FastFD");
   private MotorControllerGroup shooterMotors = new MotorControllerGroup(leftShooter, rightShooter);
   
   public ShooterSubsystem() { rightShooter.setInverted(true); }
