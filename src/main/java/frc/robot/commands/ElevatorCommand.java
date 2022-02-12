@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class ElevatorCommand extends CommandBase {
-	
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Elevator m_subsystem;
 
   /**

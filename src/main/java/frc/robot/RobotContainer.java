@@ -82,13 +82,13 @@ public class RobotContainer {
     // a shoots, x spins intake forward, y spins intake backward
 
     JoystickButton A_BUTTON = new JoystickButton(m_logiController, 1);
-    A_BUTTON.whenHeld(new ShooterCommand(m_shooterSubsystem));
+    A_BUTTON.whenPressed(new ShooterCommand(m_shooterSubsystem));
 
     JoystickButton X_BUTTON = new JoystickButton(m_logiController, 3);
-    X_BUTTON.whenHeld(new IntakeSpin(m_intake, true));
+    X_BUTTON.whenPressed(new IntakeSpin(m_intake, true));
 
     JoystickButton Y_BUTTON = new JoystickButton(m_logiController, 4);
-    Y_BUTTON.whenHeld(new IntakeSpin(m_intake, false));
+    Y_BUTTON.whenPressed(new IntakeSpin(m_intake, false));
     
   }
   private static double deadband(double value, double deadband) {
