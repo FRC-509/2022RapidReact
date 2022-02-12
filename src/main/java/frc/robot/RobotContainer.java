@@ -1,6 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
@@ -17,19 +14,20 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeSpin;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.TankDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import java.util.function.DoubleSupplier;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -41,12 +39,15 @@ public class RobotContainer {
   public final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final Intake m_intake = new Intake();
-  public final DriveTrain m_driveTrain = new DriveTrain();
+  public final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   public final ShooterCommand m_ShooterCommand = new ShooterCommand(m_shooterSubsystem);
   public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public final IntakeSpin m_intakeSpin = new IntakeSpin(m_intake,true);
-  public final TankDrive m_tankDriveCMD = new TankDrive(m_driveTrain);
+
+  private final Joystick l_stick = new Joystick(0);
+  private final Joystick r_stick = new Joystick(1);
+
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -55,8 +56,14 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // m_driveTrain.setDefaultCommand(m_tankDriveCMD);
-    // m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
+    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+      m_drivetrainSubsystem,
+      () -> -modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+));
+
+    m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
 
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
@@ -75,14 +82,35 @@ public class RobotContainer {
     // a shoots, x spins intake forward, y spins intake backward
 
     JoystickButton A_BUTTON = new JoystickButton(m_logiController, 1);
-    A_BUTTON.whenHeld(new ShooterCommand(m_shooterSubsystem));
+    A_BUTTON.whenPressed(new ShooterCommand(m_shooterSubsystem));
 
     JoystickButton X_BUTTON = new JoystickButton(m_logiController, 3);
-    X_BUTTON.whenHeld(new IntakeSpin(m_intake, true));
+    X_BUTTON.whenPressed(new IntakeSpin(m_intake, true));
 
     JoystickButton Y_BUTTON = new JoystickButton(m_logiController, 4);
-    Y_BUTTON.whenHeld(new IntakeSpin(m_intake, false));
+    Y_BUTTON.whenPressed(new IntakeSpin(m_intake, false));
     
+  }
+  private static double deadband(double value, double deadband) {
+    if (Math.abs(value) > deadband) {
+      if (value > 0.0) {
+        return (value - deadband) / (1.0 - deadband);
+      } else {
+        return (value + deadband) / (1.0 - deadband);
+      }
+    } else {
+      return 0.0;
+    }
+  }
+
+  private static double modifyAxis(double value) {
+    // Deadband
+    value = deadband(value, 0.05);
+
+    // Square the axis
+    value = Math.copySign(value * value, value);
+
+    return value;
   }
   
   /**
