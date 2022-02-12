@@ -16,11 +16,14 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.ElevatorCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,18 +41,19 @@ import java.util.function.DoubleSupplier;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  
+  // public final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final Indexer m_indexer = new Indexer();
   public final Intake m_intake = new Intake();
+  public final Elevator m_elevator = new Elevator();
   public final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
-  public final ShooterCommand m_ShooterCommand = new ShooterCommand(m_shooterSubsystem);
-  public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  public final IntakeSpin m_intakeSpin = new IntakeSpin(m_intake,true);
+  // public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // public final IntakeSpin m_intakeSpin = new IntakeSpin(m_intake,true);
 
-  private final Joystick l_stick = new Joystick(0);
-  private final Joystick r_stick = new Joystick(1);
+  private final Joystick l_stick = new Joystick(1);
+  private final Joystick r_stick = new Joystick(0);
 
   private final GenericHID m_logiController = new GenericHID(0);
 
@@ -68,7 +72,13 @@ public class RobotContainer {
       () -> -modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
 ));
 
-    m_shooterSubsystem.setDefaultCommand(m_ShooterCommand);
+    m_shooterSubsystem.setDefaultCommand(new ShooterCommand(m_shooterSubsystem));
+
+    m_elevator.setDefaultCommand(new ElevatorCommand(
+      m_elevator,
+      () -> m_logiController.getRawAxis(2),
+      () -> m_logiController.getRawAxis(3)
+    ));
 
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
