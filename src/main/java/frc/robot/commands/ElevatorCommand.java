@@ -38,13 +38,15 @@ public class ElevatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.armGroup.set(m_armYSupplier.getAsDouble());
-    m_subsystem.elevatorMotor.set(m_elevatorYSupplier.getAsDouble());
+    m_subsystem.moveElevator(m_elevatorYSupplier.getAsDouble());
+    m_subsystem.moveArm(m_armYSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_subsystem.elevatorMotor.set(0);
+  }
 
   // Returns true when the command should end.
   @Override
