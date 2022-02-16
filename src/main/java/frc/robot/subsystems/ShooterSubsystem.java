@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimeLightWrapper;
 
 public class ShooterSubsystem extends SubsystemBase {
   private final WPI_TalonFX motor = new WPI_TalonFX(12);
@@ -16,20 +17,26 @@ public class ShooterSubsystem extends SubsystemBase {
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
 
   public ShooterSubsystem() {
-      motor2.setInverted(true);
+    motor2.setInverted(true);
+    
   }
 
   @Override
   public void periodic() {
-      // This method will be called once per scheduler run
+    // This method will be called once per scheduler run
   }
 
   @Override
   public void simulationPeriodic() {
-      // This method will be called once per scheduler run when in simulation
+    // This method will be called once per scheduler run when in simulation
   }
 
   public void shoot(double speed) {
     m_motorGroup.set(speed);
+    LimeLightWrapper.turnON();
+  }
+  public double getDistanceToTarget() {
+    //height between limelight and target
+    return 73.5d / Math.tan(LimeLightWrapper.getAngle() + 35.0d);
   }
 }
