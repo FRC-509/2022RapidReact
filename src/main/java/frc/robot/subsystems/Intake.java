@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-    private final WPI_TalonFX motor = new WPI_TalonFX(16); // UNKNOWN INDEX
+    private final WPI_TalonFX motor = new WPI_TalonFX(16);
 
     public Intake() {
         motor.setInverted(true);
