@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -74,7 +75,7 @@ public class RobotContainer {
       () -> m_logiController.getRawAxis(1),
       () -> m_logiController.getRawAxis(5)
     ));
-
+    
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
     SmartDashboard.putData("Command Chooser", m_chooser);
