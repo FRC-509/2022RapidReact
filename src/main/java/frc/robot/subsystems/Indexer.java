@@ -6,18 +6,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
-  private final WPI_TalonFX motor = new WPI_TalonFX(10);
-  private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
+  private final WPI_TalonFX motor = new WPI_TalonFX(9);
 
-  private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
 
   public Indexer() {
-    motor2.setInverted(true);
+    motor.setInverted(true);
   }
+    
 
   @Override
   public void periodic() {
@@ -30,6 +28,6 @@ public class Indexer extends SubsystemBase {
   }
 
   public void moveTheThing(double speed) {
-    m_motorGroup.set(speed);
+    motor.set(speed);
   }
 }

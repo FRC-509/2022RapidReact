@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimeLightWrapper;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final WPI_TalonFX motor = new WPI_TalonFX(12);
-  private final WPI_TalonFX motor2 = new WPI_TalonFX(9);
+  private final WPI_TalonFX motor = new WPI_TalonFX(10);
+  private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
 
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
 

@@ -21,8 +21,12 @@ public class IntakeSpin extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(m_spinForward) m_intake.spin(1.0);
-        else m_intake.spin(-1.0);
+        if(m_spinForward) {
+            m_intake.spin(.25);
+        }
+        else {
+            m_intake.spin(-.25);
+        }
     }
 
     // Called once the command ends or is interrupted.

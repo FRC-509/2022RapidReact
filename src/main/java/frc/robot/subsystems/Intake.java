@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void spin(double speed) {
-        motor.set(ControlMode.Velocity, speed);
+        motor.set(ControlMode.PercentOutput, speed);
     }
 }
 

@@ -35,13 +35,13 @@ public class Elevator extends SubsystemBase {
     }
     public void moveElevator(double input){
         double elevPos = elevatorMotor.getSelectedSensorPosition();
-        elevatorMotor.set(softStop(-input, elevPos, -275000, 50000));
+        elevatorMotor.set(softStop(-input, elevPos, -345000, 1000000));
         SmartDashboard.putNumber("elevator pos:", elevPos);
     }
 
     public void moveArm(double input){
         double armPos1 = armMotor1.getSelectedSensorPosition();
-        armGroup.set(softStop(input, armPos1, -20000, 28000));
+        armGroup.set(softStop((.25*(input)), armPos1, -2000000, 6000000));
         SmartDashboard.putNumber("arm pos:", armPos1);
     }
 
