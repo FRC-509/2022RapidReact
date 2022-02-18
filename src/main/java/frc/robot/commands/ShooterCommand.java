@@ -19,7 +19,7 @@ public class ShooterCommand extends CommandBase{
     
     @Override
     public void execute() {
-        m_shooterSubsystem.shoot(.1);
+        m_shooterSubsystem.shoot(1);
     }
 
     @Override

@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -15,10 +18,9 @@ public class ShooterSubsystem extends SubsystemBase {
   private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
 
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
-
+  
   public ShooterSubsystem() {
     motor2.setInverted(true);
-    
   }
 
   @Override

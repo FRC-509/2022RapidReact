@@ -13,7 +13,7 @@ public class Indexer extends SubsystemBase {
 
 
   public Indexer() {
-    motor.setInverted(true);
+    motor.setInverted(false);
   }
     
 
