@@ -84,6 +84,9 @@ public class RobotContainer {
   }
 
   public static RobotContainer getInstance() {
+    if(m_instance == null) {
+      m_instance = new RobotContainer();
+    }
     return m_instance;
   }
   /**
