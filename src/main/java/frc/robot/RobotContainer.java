@@ -37,6 +37,8 @@ import java.util.function.DoubleSupplier;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
+  private static RobotContainer m_instance = new RobotContainer();
+
   public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final Indexer m_indexer = new Indexer();
   public final Intake m_intake = new Intake();
@@ -51,7 +53,7 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  private RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
@@ -73,7 +75,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(new ElevatorCommand(
       m_elevator,
       () -> m_logiController.getRawAxis(1),
-      () -> m_logiController.getRawAxis(5)
+      () -> -m_logiController.getRawAxis(5)
     ));
     
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
@@ -81,6 +83,9 @@ public class RobotContainer {
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
+  public static RobotContainer getInstance() {
+    return m_instance;
+  }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -94,7 +99,10 @@ public class RobotContainer {
     // a shoots, x spins intake forward, y spins intake backward
 
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
-    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(m_shooterSubsystem));
+    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(m_shooterSubsystem, true));
+
+    JoystickButton RIGHT_STICK_BUTTON_2= new JoystickButton(r_stick, 2);
+    RIGHT_STICK_BUTTON_2.whenHeld(new ShooterCommand(m_shooterSubsystem, false));
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin(m_intake, true));

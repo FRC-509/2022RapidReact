@@ -9,14 +9,18 @@ import java.util.ResourceBundle.Control;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimeLightWrapper;
+import frc.robot.RobotContainer;
+import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class ShooterSubsystem extends SubsystemBase {
   private final WPI_TalonFX motor = new WPI_TalonFX(10);
   private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
-
+  
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
   
   public ShooterSubsystem() {
@@ -36,9 +40,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public void shoot(double speed) {
     m_motorGroup.set(speed);
     LimeLightWrapper.turnON();
+    new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0.0, () -> 0.0, () -> -LimeLightWrapper.getSkewAngle());
+    double delta_dist = (73.5d / Math.tan(35.0d))-getDistanceToTarget();
+    new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0.0, () -> delta_dist, () -> 0);
+
   }
+
   public double getDistanceToTarget() {
     //height between limelight and target
-    return 73.5d / Math.tan(LimeLightWrapper.getAngle() + 35.0d);
+    return 73.5d / Math.tan(LimeLightWrapper.getCamtranData()[4] + 35.0d);
   }
 }

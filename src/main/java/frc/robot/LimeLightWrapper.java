@@ -18,10 +18,6 @@ public class LimeLightWrapper {
     public static double getZ() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tz").getDouble(0);
     }
-
-    public static double getAngle() {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-    }
     
     public static double getLatency() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tl").getDouble(0);
@@ -35,6 +31,15 @@ public class LimeLightWrapper {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0 ? false : true;
     
     }
+
+    public static double getSkewAngle() {
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+    }
+
+    public static double[] getCamtranData() {
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
+    }
+
     public static void turnON(){
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
 

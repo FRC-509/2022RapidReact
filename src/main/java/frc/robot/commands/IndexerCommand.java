@@ -29,7 +29,7 @@ public class IndexerCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { m_indexer.moveTheThing(1.0); }
+  public void execute() { m_indexer.moveTheThing(0.25); }
 
   // Called once the command ends or is interrupted.
   @Override

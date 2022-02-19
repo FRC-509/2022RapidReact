@@ -22,10 +22,10 @@ public class IntakeSpin extends CommandBase{
     @Override
     public void execute() {
         if(m_spinForward) {
-            m_intake.spin(.25);
+            m_intake.spin(-.25);
         }
         else {
-            m_intake.spin(-.25);
+            m_intake.spin(.25);
         }
     }
 

@@ -7,10 +7,11 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends CommandBase{
     private final ShooterSubsystem  m_shooterSubsystem;
-    
-    public ShooterCommand(ShooterSubsystem subsystem){
+    private final boolean m_far;
+
+    public ShooterCommand(ShooterSubsystem subsystem, boolean far){
       m_shooterSubsystem = subsystem;
-      
+      m_far = far;
       addRequirements(subsystem);
     }
 
@@ -19,7 +20,10 @@ public class ShooterCommand extends CommandBase{
     
     @Override
     public void execute() {
-        m_shooterSubsystem.shoot(1);
+        if (m_far)
+            m_shooterSubsystem.shoot(0.5);
+        else
+            m_shooterSubsystem.shoot(0.3);
     }
 
     @Override
