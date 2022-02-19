@@ -40,10 +40,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public void shoot(double speed) {
     m_motorGroup.set(speed);
     LimeLightWrapper.turnON();
-    new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0.0, () -> 0.0, () -> -LimeLightWrapper.getSkewAngle());
+    new DefaultDriveCommand(() -> 0.0, () -> 0.0, () -> -LimeLightWrapper.getSkewAngle());
     double delta_dist = (73.5d / Math.tan(35.0d))-getDistanceToTarget();
-    new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0.0, () -> delta_dist, () -> 0);
-
+    new DefaultDriveCommand(() -> 0.0, () -> delta_dist, () -> 0);
   }
 
   public double getDistanceToTarget() {

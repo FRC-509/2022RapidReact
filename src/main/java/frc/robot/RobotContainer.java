@@ -36,29 +36,26 @@ import java.util.function.DoubleSupplier;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
-  private static RobotContainer m_instance = new RobotContainer();
 
-  public final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  public final Indexer m_indexer = new Indexer();
-  public final Intake m_intake = new Intake();
-  public final Elevator m_elevator = new Elevator();
-  public final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  public static final Indexer m_indexer = new Indexer();
+  public static final Intake m_intake = new Intake();
+  public static final Elevator m_elevator = new Elevator();
+  public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
-  private final Joystick l_stick = new Joystick(1);
-  private final Joystick r_stick = new Joystick(0);
+  private static final Joystick l_stick = new Joystick(1);
+  private static final Joystick r_stick = new Joystick(0);
 
-  private final GenericHID m_logiController = new GenericHID(2);
+  private static final GenericHID m_logiController = new GenericHID(2);
 
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  private RobotContainer() {
+  public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      m_drivetrainSubsystem,
       () -> -modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
@@ -73,7 +70,6 @@ public class RobotContainer {
 
 
     m_elevator.setDefaultCommand(new ElevatorCommand(
-      m_elevator,
       () -> m_logiController.getRawAxis(1),
       () -> -m_logiController.getRawAxis(5)
     ));
@@ -83,12 +79,6 @@ public class RobotContainer {
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
-  public static RobotContainer getInstance() {
-    if(m_instance == null) {
-      m_instance = new RobotContainer();
-    }
-    return m_instance;
-  }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -102,19 +92,19 @@ public class RobotContainer {
     // a shoots, x spins intake forward, y spins intake backward
 
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
-    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(m_shooterSubsystem, true));
+    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(true));
 
     JoystickButton RIGHT_STICK_BUTTON_2= new JoystickButton(r_stick, 2);
-    RIGHT_STICK_BUTTON_2.whenHeld(new ShooterCommand(m_shooterSubsystem, false));
+    RIGHT_STICK_BUTTON_2.whenHeld(new ShooterCommand(false));
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
-    LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin(m_intake, true));
+    LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin(true));
 
     JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
-    LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(m_intake, false));
+    LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(false));
 
     JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
-    RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand(m_indexer)); 
+    RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand()); 
   }
 
   private static double deadband(double value, double deadband) {

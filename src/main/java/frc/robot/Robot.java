@@ -26,6 +26,7 @@ import frc.robot.RobotContainer;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  private RobotContainer m_robotContainer;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     System.out.println("[Robot::Init] Initalizing Default Commands...");
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    m_robotContainer = new RobotContainer();
     // autonomous chooser on the dashboard.
   }
 
@@ -63,7 +65,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = RobotContainer.getInstance().getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

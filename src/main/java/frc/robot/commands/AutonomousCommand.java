@@ -27,7 +27,10 @@ public class AutonomousCommand extends CommandBase {
   public AutonomousCommand() {
     // m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    // addRequirements(subsystem);
+    addRequirements(RobotContainer.m_drivetrainSubsystem);
+    addRequirements(RobotContainer.m_shooterSubsystem);
+    addRequirements(RobotContainer.m_intake);
+    addRequirements(RobotContainer.m_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -42,18 +45,18 @@ public class AutonomousCommand extends CommandBase {
   public void execute() {
     
     while (m_timer.get() < 2.0) {
-      new IntakeSpin(RobotContainer.getInstance().m_intake, true);
-      new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0, () -> 1, () -> 0);
+      new IntakeSpin(true);
+      new DefaultDriveCommand(() -> 0, () -> 1, () -> 0);
       // spin intake and move on the y axis for a hot 2 seconds
       SmartDashboard.putString("Driving", "yes");
     }
     SmartDashboard.putString("Driving", "no");
 
-    new DefaultDriveCommand(RobotContainer.getInstance().m_drivetrainSubsystem, () -> 0, () -> 0, () -> 180);
+    new DefaultDriveCommand(() -> 0, () -> 0, () -> 180);
     // turn around
     // every now and then..
-    new IndexerCommand(RobotContainer.getInstance().m_indexer);
-    new ShooterCommand(RobotContainer.getInstance().m_shooterSubsystem, true);
+    new IndexerCommand();
+    new ShooterCommand(true);
     SmartDashboard.putString("Shooter", "yes");
 
     try {

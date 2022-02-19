@@ -179,7 +179,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-   SmartDashboard.putNumber("cum angle", -m_navx.getYaw());
+   SmartDashboard.putNumber("angle", -m_navx.getYaw());
    return Rotation2d.fromDegrees(-m_navx.getYaw()+90);
   }
 
