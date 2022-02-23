@@ -11,7 +11,7 @@ public class ShooterCommand extends CommandBase{
 
     public ShooterCommand(boolean far){
       m_far = far;
-      addRequirements(RobotContainer.m_shooterSubsystem);
+      addRequirements(RobotContainer.s_shooterSubsystem);
     }
 
     @Override
@@ -20,14 +20,14 @@ public class ShooterCommand extends CommandBase{
     @Override
     public void execute() {
         if (m_far)
-            RobotContainer.m_shooterSubsystem.shoot(0.5);
+            RobotContainer.s_shooterSubsystem.shoot(0.5);
         else
-            RobotContainer.m_shooterSubsystem.shoot(0.3);
+            RobotContainer.s_shooterSubsystem.shoot(0.3);
     }
 
     @Override
     public void end(boolean interrupted){
-        RobotContainer.m_shooterSubsystem.shoot(0.0);
+        RobotContainer.s_shooterSubsystem.shoot(0.0);
     }
 
     @Override

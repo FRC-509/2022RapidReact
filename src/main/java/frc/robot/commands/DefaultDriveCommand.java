@@ -20,18 +20,18 @@ public class DefaultDriveCommand extends CommandBase {
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
 
-        addRequirements(RobotContainer.m_drivetrainSubsystem);
+        addRequirements(RobotContainer.s_drivetrainSubsystem);
     }
 
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        RobotContainer.m_drivetrainSubsystem.drive(
+        RobotContainer.s_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                         m_translationXSupplier.getAsDouble(),
                         m_translationYSupplier.getAsDouble(),
                         m_rotationSupplier.getAsDouble(),
-                        RobotContainer.m_drivetrainSubsystem.getGyroscopeRotation()
+                        RobotContainer.s_drivetrainSubsystem.getGyroscopeRotation()
                 )
         );
         
@@ -39,6 +39,6 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        RobotContainer.s_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
     }
 }

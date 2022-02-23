@@ -19,7 +19,7 @@ public class IndexerCommand extends CommandBase {
    */
   public IndexerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_indexer);
+    addRequirements(RobotContainer.s_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -28,12 +28,12 @@ public class IndexerCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { RobotContainer.m_indexer.moveTheThing(0.25); }
+  public void execute() { RobotContainer.s_indexer.moveTheThing(0.25); }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_indexer.moveTheThing(0.0);
+    RobotContainer.s_indexer.moveTheThing(0.0);
   }
 
   // Returns true when the command should end.

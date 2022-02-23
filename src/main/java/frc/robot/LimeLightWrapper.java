@@ -29,7 +29,6 @@ public class LimeLightWrapper {
     
     public static boolean hasTarget() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0 ? false : true;
-    
     }
 
     public static double getSkewAngle() {
@@ -47,6 +46,6 @@ public class LimeLightWrapper {
     
     public static void setLed(double state) {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(state);
-        SmartDashboard.putNumber("limelight state", state);
+        SmartDashboard.putNumber("LimeLight State", state);
     }
 }

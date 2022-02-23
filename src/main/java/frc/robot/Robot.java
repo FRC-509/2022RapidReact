@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     System.out.println("[Robot::Init] Initalizing Default Commands...");
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    m_robotContainer = new RobotContainer();
     // autonomous chooser on the dashboard.
+    m_robotContainer = new RobotContainer();
   }
 
   /**
@@ -87,8 +87,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
   }
-
-
 
   /** This function is called periodically during operator control. */
   @Override

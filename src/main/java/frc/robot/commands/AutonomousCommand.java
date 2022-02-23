@@ -27,10 +27,10 @@ public class AutonomousCommand extends CommandBase {
   public AutonomousCommand() {
     // m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_drivetrainSubsystem);
-    addRequirements(RobotContainer.m_shooterSubsystem);
-    addRequirements(RobotContainer.m_intake);
-    addRequirements(RobotContainer.m_indexer);
+    addRequirements(RobotContainer.s_drivetrainSubsystem);
+    addRequirements(RobotContainer.s_shooterSubsystem);
+    addRequirements(RobotContainer.s_intake);
+    addRequirements(RobotContainer.s_indexer);
   }
 
   // Called when the command is initially scheduled.

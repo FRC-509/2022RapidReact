@@ -37,41 +37,33 @@ import java.util.function.DoubleSupplier;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  public static final Indexer m_indexer = new Indexer();
-  public static final Intake m_intake = new Intake();
-  public static final Elevator m_elevator = new Elevator();
-  public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final ShooterSubsystem s_shooterSubsystem = new ShooterSubsystem();
+  public static final Indexer s_indexer = new Indexer();
+  public static final Intake s_intake = new Intake();
+  public static final Elevator s_elevator = new Elevator();
+  public static final DrivetrainSubsystem s_drivetrainSubsystem = new DrivetrainSubsystem();
 
-  private static final Joystick l_stick = new Joystick(1);
-  private static final Joystick r_stick = new Joystick(0);
+  public static final Joystick l_stick = new Joystick(1);
+  public static final Joystick r_stick = new Joystick(0);
 
-  private static final GenericHID m_logiController = new GenericHID(2);
+  public static final GenericHID s_logiController = new GenericHID(2);
 
-  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
       () -> -modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    // m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-    //   m_drivetrainSubsystem,
-    //   () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-    //   () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-    //   () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    // ));
-
-
-    m_elevator.setDefaultCommand(new ElevatorCommand(
-      () -> m_logiController.getRawAxis(1),
-      () -> -m_logiController.getRawAxis(5)
+    s_elevator.setDefaultCommand(new ElevatorCommand(
+      () -> s_logiController.getRawAxis(1),
+      () -> -s_logiController.getRawAxis(5)
     ));
     
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
@@ -94,7 +86,7 @@ public class RobotContainer {
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
     RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(true));
 
-    JoystickButton RIGHT_STICK_BUTTON_2= new JoystickButton(r_stick, 2);
+    JoystickButton RIGHT_STICK_BUTTON_2 = new JoystickButton(r_stick, 2);
     RIGHT_STICK_BUTTON_2.whenHeld(new ShooterCommand(false));
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);

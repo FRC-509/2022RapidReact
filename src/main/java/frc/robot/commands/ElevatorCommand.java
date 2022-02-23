@@ -25,7 +25,7 @@ public class ElevatorCommand extends CommandBase {
     m_armYSupplier = armYSupplier;
     m_elevatorYSupplier = elevatorYSupplier;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_elevator);
+    addRequirements(RobotContainer.s_elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -35,14 +35,14 @@ public class ElevatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_elevator.moveElevator(m_elevatorYSupplier.getAsDouble());
-    RobotContainer.m_elevator.moveArm(m_armYSupplier.getAsDouble());
+    RobotContainer.s_elevator.moveElevator(m_elevatorYSupplier.getAsDouble());
+    RobotContainer.s_elevator.moveArm(m_armYSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_elevator.elevatorMotor.set(0);
+    RobotContainer.s_elevator.elevatorMotor.set(0);
   }
 
   // Returns true when the command should end.

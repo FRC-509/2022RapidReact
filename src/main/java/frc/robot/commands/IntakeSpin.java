@@ -9,7 +9,7 @@ public class IntakeSpin extends CommandBase{
 
     public IntakeSpin(boolean _spinForward) {
         m_spinForward = _spinForward;
-        addRequirements(RobotContainer.m_intake);
+        addRequirements(RobotContainer.s_intake);
     }
 
     @Override
@@ -19,17 +19,17 @@ public class IntakeSpin extends CommandBase{
     @Override
     public void execute() {
         if(m_spinForward) {
-            RobotContainer.m_intake.spin(-.25);
+            RobotContainer.s_intake.spin(-.25);
         }
         else {
-            RobotContainer.m_intake.spin(.25);
+            RobotContainer.s_intake.spin(.25);
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interupted) {
-        RobotContainer.m_intake.spin(0.0);
+        RobotContainer.s_intake.spin(0.0);
     }
 
     // Returns true when the command should end.
