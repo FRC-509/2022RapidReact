@@ -44,26 +44,6 @@ public class AutonomousCommand extends CommandBase {
   @Override
   public void execute() {
     
-    while (m_timer.get() < 2.0) {
-      new IntakeSpin(true);
-      new DefaultDriveCommand(() -> 0, () -> 1, () -> 0);
-      // spin intake and move on the y axis for a hot 2 seconds
-      SmartDashboard.putString("Driving", "yes");
-    }
-    SmartDashboard.putString("Driving", "no");
-
-    new DefaultDriveCommand(() -> 0, () -> 0, () -> 180);
-    // turn around
-    // every now and then..
-    new IndexerCommand();
-    new ShooterCommand(true);
-    SmartDashboard.putString("Shooter", "yes");
-
-    try {
-      m_timer.wait((long)(20-m_timer.get()));
-    } catch (InterruptedException e) {
-      return;
-    }
 
     
   }

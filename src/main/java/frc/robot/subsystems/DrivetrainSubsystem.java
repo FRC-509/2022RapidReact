@@ -8,11 +8,15 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -54,7 +58,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
-  private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+  public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND / 10, Math.PI / 4);
+  
+  public static final SwerveDriveKinematics s_kinematics = new SwerveDriveKinematics(
           // Front left
           new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
           // Front right
@@ -71,15 +77,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // FIXME Remove if you are using a Pigeon
     private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
-  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  private final static AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  private final static SwerveDriveOdometry m_odometer = new SwerveDriveOdometry(s_kinematics, Rotation2d.fromDegrees(0));
 
   // These are our modules. We initialize them in the constructor.
-  private final SwerveModule m_frontLeftModule;
-  private final SwerveModule m_frontRightModule;
-  private final SwerveModule m_backLeftModule;
-  private final SwerveModule m_backRightModule;
+  private static SwerveModule m_frontLeftModule;
+  private static SwerveModule m_frontRightModule;
+  private static SwerveModule m_backLeftModule;
+  private static SwerveModule m_backRightModule;
 
-  private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private static ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -168,14 +175,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_navx.zeroYaw();
   }
 
-  public Rotation2d getGyroscopeRotation() {
+  public static Rotation2d getGyroscopeRotation() {
     // FIXME Remove if you are using a Pigeon
-//    return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+    // return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
 
     // FIXME Uncomment if you are using a NavX
   if (m_navx.isMagnetometerCalibrated()) {
-     // We will only get valid fused headings if the magnetometer is calibrated
-     return Rotation2d.fromDegrees(m_navx.getFusedHeading()+90);
+    // We will only get valid fused headings if the magnetometer is calibrated
+    return Rotation2d.fromDegrees(m_navx.getFusedHeading()+90);
   }
 
    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
@@ -183,13 +190,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
    return Rotation2d.fromDegrees(-m_navx.getYaw()+90);
   }
 
+  public static Pose2d getPose() {
+    return m_odometer.getPoseMeters();
+  }
+  
+  public void resetOdometry(Pose2d pose) {
+    m_odometer.resetPosition(pose, getGyroscopeRotation());
+  }
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
   }
 
   @Override
   public void periodic() {
-    SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SwerveModuleState[] states = s_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    m_odometer.update(getGyroscopeRotation(), states);
+    SmartDashboard.putNumber("Robot Heading", getGyroscopeRotation().getDegrees());
+    SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+  }
+  public void stopModules() {
+    m_frontLeftModule.set(0,0);
+    m_frontRightModule.set(0,0);
+    m_backLeftModule.set(0,0);
+    m_backRightModule.set(0,0);
+  }
+  public static void setModuleStates(SwerveModuleState[] states) {
     //SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());

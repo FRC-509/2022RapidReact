@@ -18,15 +18,25 @@ import frc.robot.commands.ElevatorCommand;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+
+import java.util.List;
 import java.util.function.DoubleSupplier;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -128,9 +138,42 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    //TrajectoryConfig config = new TrajectoryConfig(
-    //    Units.feetToMeters(2.0), Units.feetToMeters(2.0));
-    //config.setKinematics(m_driveTrain.getKinematics());
-    return m_chooser.getSelected();
+
+    // set up trajectory config
+    TrajectoryConfig config = new TrajectoryConfig(
+      DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      3.0d
+    ).setKinematics(DrivetrainSubsystem.s_kinematics);
+
+    PIDController xController = new PIDController(1.5, 0, 0);
+    PIDController yController = new PIDController(1.5, 0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(3.0d, 0, 0, DrivetrainSubsystem.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0, 0, new Rotation2d(0)),
+      List.of(
+        new Translation2d(1, 0),
+        new Translation2d(1, -1)),
+      new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
+      config
+    );
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+      trajectory,
+      DrivetrainSubsystem::getPose,
+      DrivetrainSubsystem.s_kinematics,
+      xController,
+      yController,
+      thetaController,
+      DrivetrainSubsystem::setModuleStates,
+      s_drivetrainSubsystem
+    );
+
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
+      swerveControllerCommand,
+      new InstantCommand(() -> s_drivetrainSubsystem.stopModules())
+      );
   }
 }
