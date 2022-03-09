@@ -10,6 +10,7 @@ public class IntakeSpin extends CommandBase{
     public IntakeSpin(boolean _spinForward) {
         m_spinForward = _spinForward;
         addRequirements(RobotContainer.s_intake);
+        addRequirements(RobotContainer.s_indexer);
     }
 
     @Override
@@ -20,9 +21,12 @@ public class IntakeSpin extends CommandBase{
     public void execute() {
         if(m_spinForward) {
             RobotContainer.s_intake.spin(-.25);
+            RobotContainer.s_indexer.moveTheThing(.25);
         }
+        
         else {
             RobotContainer.s_intake.spin(.25);
+            RobotContainer.s_indexer.moveTheThing(-.25);
         }
     }
 
@@ -30,6 +34,7 @@ public class IntakeSpin extends CommandBase{
     @Override
     public void end(boolean interupted) {
         RobotContainer.s_intake.spin(0.0);
+        RobotContainer.s_indexer.moveTheThing(0.0);
     }
 
     // Returns true when the command should end.
