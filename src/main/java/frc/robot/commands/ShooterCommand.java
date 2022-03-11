@@ -25,7 +25,6 @@ public class ShooterCommand extends CommandBase{
         }
         else
             RobotContainer.s_shooterSubsystem.shoot(0.3);
-            //math stuff here
     }
 
     @Override

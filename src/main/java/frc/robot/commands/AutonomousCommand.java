@@ -14,19 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/** An example command that uses an example subsystem. */
 public class AutonomousCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   //private final SubsystemBase m_subsystem;
   private final Timer m_timer = new Timer();
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+
   public AutonomousCommand() {
-    // m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.s_drivetrainSubsystem);
     addRequirements(RobotContainer.s_shooterSubsystem);
     addRequirements(RobotContainer.s_intake);
