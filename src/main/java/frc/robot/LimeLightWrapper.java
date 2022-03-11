@@ -36,7 +36,7 @@ public class LimeLightWrapper {
     }
 
     public static double[] getCamtranData() {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray((double[])null);
     }
 
     public static void turnON(){

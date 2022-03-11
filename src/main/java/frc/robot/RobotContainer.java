@@ -110,8 +110,8 @@ public class RobotContainer {
     JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
     LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(false));
 
-    JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
-    RIGHT_STICK_BUTTON_4.whenHeld(new AimbotAndShoot());
+    //JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
+    //RIGHT_STICK_BUTTON_4.whenHeld(new AimbotAndShoot());
   }
 
   private static double deadband(double value, double deadband) {
