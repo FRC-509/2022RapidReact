@@ -135,23 +135,10 @@ public class RobotContainer {
 
     return value;
   }
-  
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public static SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-    trajectory,
-    DrivetrainSubsystem::getPose,
-    DrivetrainSubsystem.s_kinematics,
-    xController,
-    yController,
-    thetaController,
-    DrivetrainSubsystem::setModuleStates,
-    s_drivetrainSubsystem
-  );
-  /*public static Command getAutonomousCommand() {
+
+  public static SwerveControllerCommand swerveControllerCommand;
+
+  public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
 
     // set up trajectory config
@@ -171,14 +158,22 @@ public class RobotContainer {
       SmartDashboard.putString("was i able to find a file", "no you eedot");
     }
 
+    swerveControllerCommand = new SwerveControllerCommand(
+      trajectory,
+      DrivetrainSubsystem::getPose,
+      DrivetrainSubsystem.s_kinematics,
+      xController,
+      yController,
+      thetaController,
+      DrivetrainSubsystem::setModuleStates,
+      s_drivetrainSubsystem
+    );
+
+
     return new SequentialCommandGroup(
       new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
       swerveControllerCommand,
       new InstantCommand(() -> s_drivetrainSubsystem.stopModules())
       );
-  }*/
-
-  public static Command getAutonomousCommand() {
-    return null;
   }
 }
