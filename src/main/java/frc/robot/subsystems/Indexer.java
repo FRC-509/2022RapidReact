@@ -11,12 +11,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Indexer extends SubsystemBase {
   private final WPI_TalonFX motor = new WPI_TalonFX(9);
 
-
   public Indexer() {
     motor.setInverted(false);
   }
-    
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
