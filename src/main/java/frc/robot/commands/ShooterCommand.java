@@ -20,9 +20,9 @@ public class ShooterCommand extends CommandBase{
     
     @Override
     public void execute() {
-        if (m_far)
+        if (m_far) {
             RobotContainer.s_shooterSubsystem.shoot(0.5);
-            //math stuff here
+        }
         else
             RobotContainer.s_shooterSubsystem.shoot(0.3);
             //math stuff here
@@ -32,7 +32,7 @@ public class ShooterCommand extends CommandBase{
     public void end(boolean interrupted){
         RobotContainer.s_shooterSubsystem.shoot(0.0);
     }
-
+    
     @Override
     public boolean isFinished(){
         return false;

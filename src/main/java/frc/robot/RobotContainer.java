@@ -1,6 +1,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -8,8 +9,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.AimbotAndShoot;
+//import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Elevator;
@@ -34,8 +35,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.util.Units;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 /**
@@ -46,7 +49,9 @@ import java.util.function.DoubleSupplier;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  public static final PIDController xController = new PIDController(1.5, 0, 0);
+  public static final PIDController yController = new PIDController(1.5, 0, 0);
+  public static final ProfiledPIDController thetaController = new ProfiledPIDController(3.0d, 0, 0, DrivetrainSubsystem.kThetaControllerConstraints);
   public static final ShooterSubsystem s_shooterSubsystem = new ShooterSubsystem();
   public static final Indexer s_indexer = new Indexer();
   public static final Intake s_intake = new Intake();
@@ -59,6 +64,8 @@ public class RobotContainer {
   public static final GenericHID s_logiController = new GenericHID(2);
 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  private static Trajectory trajectory = null;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -76,7 +83,7 @@ public class RobotContainer {
       () -> -s_logiController.getRawAxis(5)
     ));
     
-    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+    m_chooser.setDefaultOption("Autonomous Command", null);
 
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
@@ -88,8 +95,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    System.out.println("[RobotContainer::ConfigureButtonBindings] Configuring Button Bindings...");
-
     // Elevator uses logitech controller and everything else uses joystick
     // a shoots, x spins intake forward, y spins intake backward
 
@@ -105,8 +110,8 @@ public class RobotContainer {
     JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
     LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(false));
 
-    JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
-    RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand()); 
+    JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
+    RIGHT_STICK_BUTTON_4.whenHeld(new AimbotAndShoot());
   }
 
   private static double deadband(double value, double deadband) {
@@ -136,7 +141,17 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public static SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+    trajectory,
+    DrivetrainSubsystem::getPose,
+    DrivetrainSubsystem.s_kinematics,
+    xController,
+    yController,
+    thetaController,
+    DrivetrainSubsystem::setModuleStates,
+    s_drivetrainSubsystem
+  );
+  /*public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
 
     // set up trajectory config
@@ -144,36 +159,26 @@ public class RobotContainer {
       DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       3.0d
     ).setKinematics(DrivetrainSubsystem.s_kinematics);
-
-    PIDController xController = new PIDController(1.5, 0, 0);
-    PIDController yController = new PIDController(1.5, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(3.0d, 0, 0, DrivetrainSubsystem.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-        new Translation2d(1, 0),
-        new Translation2d(1, -1)),
-      new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-      config
-    );
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-      trajectory,
-      DrivetrainSubsystem::getPose,
-      DrivetrainSubsystem.s_kinematics,
-      xController,
-      yController,
-      thetaController,
-      DrivetrainSubsystem::setModuleStates,
-      s_drivetrainSubsystem
-    );
+    String trajectoryJSON = "paths/Unnamed.wpilib.json";
+    Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    
+    try {
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    }
+    catch (Exception e) {
+      SmartDashboard.putString("was i able to find a file", "no you eedot");
+    }
 
     return new SequentialCommandGroup(
       new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
       swerveControllerCommand,
       new InstantCommand(() -> s_drivetrainSubsystem.stopModules())
       );
+  }*/
+
+  public static Command getAutonomousCommand() {
+    return null;
   }
 }

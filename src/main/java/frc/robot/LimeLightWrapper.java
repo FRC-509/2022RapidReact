@@ -28,7 +28,7 @@ public class LimeLightWrapper {
     }
     
     public static boolean hasTarget() {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0 ? false : true;
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0;
     }
 
     public static double getSkewAngle() {
@@ -41,11 +41,14 @@ public class LimeLightWrapper {
 
     public static void turnON(){
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
-
     }
     
     public static void setLed(double state) {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(state);
         SmartDashboard.putNumber("LimeLight State", state);
+    }
+
+    public static double getDistanceToHighTarget() {
+        return 73.5d / Math.tan(getCamtranData()[4] + 35.0d);
     }
 }
