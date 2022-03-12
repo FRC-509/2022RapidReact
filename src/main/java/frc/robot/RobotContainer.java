@@ -56,8 +56,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> -modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
@@ -66,6 +66,9 @@ public class RobotContainer {
       () -> -s_logiController.getRawAxis(5)
     ));
     
+    if(l_stick.getRawButton(11)){
+      s_drivetrainSubsystem.zeroGyroscope();
+    }
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
 
     SmartDashboard.putData("Command Chooser", m_chooser);
