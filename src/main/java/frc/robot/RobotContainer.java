@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,27 +19,17 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.util.Units;
-
 import java.nio.file.Path;
-import java.util.List;
-import java.util.function.DoubleSupplier;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -73,9 +62,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> -modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     s_elevator.setDefaultCommand(new ElevatorCommand(
@@ -110,6 +99,8 @@ public class RobotContainer {
     JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
     LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(false));
 
+    JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
+    LEFT_STICK_BUTTON_11.whenHeld(new InstantCommand(()-> s_drivetrainSubsystem.zeroGyroscope()));
     //JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
     //RIGHT_STICK_BUTTON_4.whenHeld(new AimbotAndShoot());
   }
@@ -168,8 +159,7 @@ public class RobotContainer {
       DrivetrainSubsystem::setModuleStates,
       s_drivetrainSubsystem
     );
-
-
+    
     return new SequentialCommandGroup(
       new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
       swerveControllerCommand,

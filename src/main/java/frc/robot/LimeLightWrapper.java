@@ -1,6 +1,5 @@
-package frc.robot;
 
-import com.ctre.phoenix.CANifier.PinValues;
+package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

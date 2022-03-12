@@ -4,56 +4,37 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ExampleSubsystem;
-
-import javax.management.relation.RoleNotFoundException;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Indexer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** An example command that uses an example subsystem. */
-public class AutonomousCommand extends CommandBase {
+public class IndexerCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  //private final SubsystemBase m_subsystem;
-  private final Timer m_timer = new Timer();
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutonomousCommand() {
-    // m_subsystem = subsystem;
+  public IndexerCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.s_drivetrainSubsystem);
-    addRequirements(RobotContainer.s_shooterSubsystem);
-    addRequirements(RobotContainer.s_intake);
     addRequirements(RobotContainer.s_indexer);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_timer.reset();
-    m_timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-   
-
-    
-  }
+  public void execute() { RobotContainer.s_indexer.moveTheThing(0.25); }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.s_indexer.moveTheThing(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
