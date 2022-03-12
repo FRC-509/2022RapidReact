@@ -101,8 +101,9 @@ public class RobotContainer {
 
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenHeld(new InstantCommand(()-> s_drivetrainSubsystem.zeroGyroscope()));
-    //JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
-    //RIGHT_STICK_BUTTON_4.whenHeld(new AimbotAndShoot());
+    
+    JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
+    RIGHT_STICK_BUTTON_4.whenReleased(new AimbotAndShoot());
   }
 
   private static double deadband(double value, double deadband) {

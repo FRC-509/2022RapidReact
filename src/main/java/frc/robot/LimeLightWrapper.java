@@ -27,7 +27,7 @@ public class LimeLightWrapper {
     }
     
     public static boolean hasTarget() {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0;
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) != 0;
     }
 
     public static double getSkewAngle() {
