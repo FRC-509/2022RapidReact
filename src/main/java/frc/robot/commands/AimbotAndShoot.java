@@ -19,7 +19,7 @@ public class AimbotAndShoot extends SequentialCommandGroup {
       new DefaultDriveCommand(() -> 0.0,() -> 0.0, () -> LimeLightWrapper.getX()/5).withInterrupt( () -> isCloseToZero(LimeLightWrapper.getX(), 0.1)),
       // keep moving until vertical offset is 0
       new DefaultDriveCommand(() -> 0.0,() -> 1.0, () -> 0.0).withInterrupt( () -> isCloseToZero(LimeLightWrapper.getY(), 0.1) )
-      // shoot for 5 seconds
+      // shoot for 2 seconds
       // new ShooterCommand(true).withTimeout(2000)
     );
   }
