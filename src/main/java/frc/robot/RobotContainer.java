@@ -56,16 +56,16 @@ public class RobotContainer {
     configureButtonBindings();
 
     s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> -modifyAxis(-l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     s_elevator.setDefaultCommand(new ElevatorCommand(
       () -> s_logiController.getRawAxis(1),
       () -> -s_logiController.getRawAxis(5)
     ));
-    
+
     if(l_stick.getRawButton(11)){
       s_drivetrainSubsystem.zeroGyroscope();
     }
