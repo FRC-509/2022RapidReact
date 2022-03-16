@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AimbotAndShoot;
-//import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.AimBot;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Elevator;
@@ -103,7 +102,7 @@ public class RobotContainer {
     LEFT_STICK_BUTTON_11.whenHeld(new InstantCommand(()-> s_drivetrainSubsystem.zeroGyroscope()));
     
     JoystickButton RIGHT_STICK_BUTTON_4 = new JoystickButton(r_stick, 4);
-    RIGHT_STICK_BUTTON_4.whenReleased(new AimbotAndShoot());
+    RIGHT_STICK_BUTTON_4.whenReleased(new AimBot());
   }
 
   private static double deadband(double value, double deadband) {
@@ -164,7 +163,9 @@ public class RobotContainer {
     return new SequentialCommandGroup(
       new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
       swerveControllerCommand,
-      new InstantCommand(() -> s_drivetrainSubsystem.stopModules())
-      );
+      new InstantCommand(() -> s_drivetrainSubsystem.stopModules()),
+      new AimBot(),
+      new ShooterCommand(true, 2.0d)
+    );
   }
 }

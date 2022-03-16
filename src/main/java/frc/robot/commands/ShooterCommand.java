@@ -1,18 +1,28 @@
 package frc.robot.commands;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.LimeLightWrapper;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends CommandBase{
-    private final boolean m_far;
+    private boolean m_far;
+    private boolean m_shootForTime; 
+    private double m_timeToShoot;
+    private Timer m_timer;
 
     public ShooterCommand(boolean far){
       m_far = far;
+      m_shootForTime = false;
       addRequirements(RobotContainer.s_shooterSubsystem);
+    }
+
+    public ShooterCommand(boolean far, double time){
+        m_far = far;
+        m_shootForTime = true;
+        m_timeToShoot = time;
+        m_timer = new Timer();
+        m_timer.start();
+        addRequirements(RobotContainer.s_shooterSubsystem);
     }
 
     @Override
@@ -34,6 +44,9 @@ public class ShooterCommand extends CommandBase{
     
     @Override
     public boolean isFinished(){
-        return false;
+        if (m_shootForTime)
+            return m_timer.get() > m_timeToShoot;
+        else
+            return false;
     }
 }
