@@ -7,12 +7,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-    public final WPI_TalonFX elevatorMotor = new WPI_TalonFX(14);
-    private final WPI_TalonFX armMotor1 = new WPI_TalonFX(15);
-    private final WPI_TalonFX armMotor2 = new WPI_TalonFX(13);
+    public final WPI_TalonFX elevatorMotor = new WPI_TalonFX(14, Constants.CANIVORE_NAME);
+    private final WPI_TalonFX armMotor1 = new WPI_TalonFX(15, Constants.CANIVORE_NAME);
+    private final WPI_TalonFX armMotor2 = new WPI_TalonFX(13, Constants.CANIVORE_NAME);
 
     public MotorControllerGroup armGroup = new MotorControllerGroup(armMotor1, armMotor2);
     
@@ -41,7 +42,7 @@ public class Elevator extends SubsystemBase {
 
     public void moveArm(double input){
         double armPos1 = armMotor1.getSelectedSensorPosition();
-        armGroup.set(softStop((.25*(input)), armPos1, -2000000, 6000000));
+        armGroup.set(softStop((.5*(input)), armPos1, -2000000, 6000000));
         SmartDashboard.putNumber("arm pos:", armPos1);
     }
 

@@ -4,10 +4,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final WPI_TalonFX motor = new WPI_TalonFX(10);
-  private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
+  private final WPI_TalonFX motor = new WPI_TalonFX(10, Constants.CANIVORE_NAME);
+  private final WPI_TalonFX motor2 = new WPI_TalonFX(11, Constants.CANIVORE_NAME);
   
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
   
