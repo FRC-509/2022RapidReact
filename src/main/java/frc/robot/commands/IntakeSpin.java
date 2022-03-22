@@ -1,4 +1,5 @@
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -12,6 +13,7 @@ public class IntakeSpin extends CommandBase{
         addRequirements(RobotContainer.s_intake);
     }
 
+    // Called when the command is initially scheduled.
     @Override
     public void initialize() {}
 
@@ -19,10 +21,10 @@ public class IntakeSpin extends CommandBase{
     @Override
     public void execute() {
         if(m_spinForward) {
-            RobotContainer.s_intake.spin(-.25);
+            RobotContainer.s_intake.spin(-0.25);
         }
         else {
-            RobotContainer.s_intake.spin(.25);
+            RobotContainer.s_intake.spin(0.25);
         }
     }
 

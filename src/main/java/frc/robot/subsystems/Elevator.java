@@ -9,10 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-    public final WPI_TalonFX elevatorMotor = new WPI_TalonFX(14);
-    private final WPI_TalonFX armMotor1 = new WPI_TalonFX(15);
-    private final WPI_TalonFX armMotor2 = new WPI_TalonFX(13);
+    public final WPI_TalonFX elevatorMotor = new WPI_TalonFX(14, Constants.CANIVORE);
+    private final WPI_TalonFX armMotor1 = new WPI_TalonFX(15, Constants.CANIVORE);
+    private final WPI_TalonFX armMotor2 = new WPI_TalonFX(13, Constants.CANIVORE);
 
     public MotorControllerGroup armGroup = new MotorControllerGroup(armMotor1, armMotor2);
     
@@ -33,6 +32,7 @@ public class Elevator extends SubsystemBase {
     public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
     }
+    
     public void moveElevator(double input){
         double elevPos = elevatorMotor.getSelectedSensorPosition();
         elevatorMotor.set(softStop(-input, elevPos, -2200000, 1000000));

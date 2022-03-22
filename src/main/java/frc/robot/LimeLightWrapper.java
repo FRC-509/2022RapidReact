@@ -28,7 +28,7 @@ public class LimeLightWrapper {
     }
     
     public static boolean hasTarget() {
-        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 0 ? false : true;
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) != 0;
     }
 
     public static double getSkewAngle() {
@@ -39,9 +39,12 @@ public class LimeLightWrapper {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
     }
 
+    public static void turnOFF(){
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    }
+
     public static void turnON(){
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
-
     }
     
     public static void setLed(double state) {

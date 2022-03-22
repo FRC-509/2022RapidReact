@@ -1,6 +1,11 @@
 
 package frc.robot;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -8,83 +13,64 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.IntakeSpin;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.ShooterCommand;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.util.Units;
-import java.util.function.DoubleSupplier;
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
+import java.util.function.DoubleSupplier;
+
+public class RobotContainer {
+  // Static instances of subsystems are declared here and made public to allow for ease of access outside this class.
   public static final ShooterSubsystem s_shooterSubsystem = new ShooterSubsystem();
   public static final Indexer s_indexer = new Indexer();
   public static final Intake s_intake = new Intake();
   public static final Elevator s_elevator = new Elevator();
-  public static final DrivetrainSubsystem s_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final SwerveDrive s_swerveDrive = new SwerveDrive();
 
+  // Input devices are declared and initialized.
   public static final Joystick l_stick = new Joystick(1);
   public static final Joystick r_stick = new Joystick(0);
 
   public static final GenericHID s_logiController = new GenericHID(2);
 
+  // A drop-down menu on the Smart Dashboard, allowing for the switching of autonomous routines.
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+    // Default commands are set for subsystems that may require continous input during Tele-op.
+    s_swerveDrive.setDefaultCommand(new DefaultDriveCommand(
+      () -> modifyAxis(l_stick.getX()) * SDSConstants.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(l_stick.getY()) * SDSConstants.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(r_stick.getX()) * SDSConstants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     s_elevator.setDefaultCommand(new ElevatorCommand(
       () -> s_logiController.getRawAxis(1),
       () -> -s_logiController.getRawAxis(5)
     ));
-
-    if(l_stick.getRawButton(11)){
-      s_drivetrainSubsystem.zeroGyroscope();
-    }
+    
+    // The default option for the sendable chooser is set, and is thrown onto the Dashboard.
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
     System.out.println("[RobotContainer::ConfigureButtonBindings] Configuring Button Bindings...");
 
-    // Elevator uses logitech controller and everything else uses joystick
-    // a shoots, x spins intake forward, y spins intake backward
+    // The elevator uses the Logitech F310 controller and everything else uses one of the two Joysticks.
 
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
     RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(true));
@@ -98,10 +84,14 @@ public class RobotContainer {
     JoystickButton LEFT_STICK_BUTTON_3 = new JoystickButton(l_stick, 3);
     LEFT_STICK_BUTTON_3.whenHeld(new IntakeSpin(false));
 
+    JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
+    LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_swerveDrive::resetYawAngle, s_swerveDrive));
+    
     JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
     RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand()); 
   }
 
+  // A deadbander utility function.
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
@@ -114,6 +104,7 @@ public class RobotContainer {
     }
   }
 
+  // A function that deadbands the input axis value to 0.2, and returns the value. This is used for the default commands of subsystems that require continous input.
   private static double modifyAxis(double value) {
     // Deadband
     value = deadband(value, 0.2);
@@ -124,16 +115,8 @@ public class RobotContainer {
     return value;
   }
   
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  // This function returns the command to be executed in autonomous mode.
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    //TrajectoryConfig config = new TrajectoryConfig(
-    //    Units.feetToMeters(2.0), Units.feetToMeters(2.0));
-    //config.setKinematics(m_driveTrain.getKinematics());
     return m_chooser.getSelected();
   }
 }

@@ -13,32 +13,27 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
 
-    public DefaultDriveCommand(DoubleSupplier translationXSupplier,
-                               DoubleSupplier translationYSupplier,
-                               DoubleSupplier rotationSupplier) {
+    public DefaultDriveCommand(DoubleSupplier translationXSupplier, DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier) {
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
 
-        addRequirements(RobotContainer.s_drivetrainSubsystem);
+        addRequirements(RobotContainer.s_swerveDrive);
     }
 
     @Override
     public void execute() {
-        // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        RobotContainer.s_drivetrainSubsystem.drive(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                        m_translationXSupplier.getAsDouble(),
-                        m_translationYSupplier.getAsDouble(),
-                        m_rotationSupplier.getAsDouble(),
-                        RobotContainer.s_drivetrainSubsystem.getGyroscopeRotation()
-                )
+        // Pass false for robot-oriented movement, and true for field-oriented movement.
+        RobotContainer.s_swerveDrive.drive(
+            m_translationXSupplier.getAsDouble(),
+            m_translationYSupplier.getAsDouble(),
+            m_rotationSupplier.getAsDouble(),
+            false
         );
-        
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.s_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        RobotContainer.s_swerveDrive.drive(0.0, 0.0, 0.0, false);
     }
 }
