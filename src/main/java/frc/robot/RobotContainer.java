@@ -73,10 +73,8 @@ public class RobotContainer {
     // The elevator uses the Logitech F310 controller and everything else uses one of the two Joysticks.
 
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
-    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(true));
-
-    JoystickButton RIGHT_STICK_BUTTON_2 = new JoystickButton(r_stick, 2);
-    RIGHT_STICK_BUTTON_2.whenHeld(new ShooterCommand(false));
+    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> l_stick.getRawAxis(3)));
+    // Button 1 on the right stick must be held down to shoot.
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin(true));
