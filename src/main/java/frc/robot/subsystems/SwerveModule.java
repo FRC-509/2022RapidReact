@@ -29,7 +29,7 @@ public class SwerveModule {
 	private ErrorCode m_turnMotorErrorCode;
 
 	public SwerveModule(int turnMotorCanID, int driveMotorCanID, int encoderPort, double encoderOffset) {
-		this(turnMotorCanID, driveMotorCanID, encoderPort, encoderOffset, 0, 0);
+		this(turnMotorCanID, driveMotorCanID, encoderPort, encoderOffset, "rio", "rio");
 	}
 
 	public SwerveModule(int turnMotorCanID, int driveMotorCanID, int encoderPort, double encoderOffset, String turnMotorCanBus, String driveMotorCanBus) {

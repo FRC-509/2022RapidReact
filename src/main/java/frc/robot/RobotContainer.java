@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.commands.AutonomousCommand;
+// import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.commands.DefaultDriveCommand;
@@ -63,7 +63,7 @@ public class RobotContainer {
     ));
     
     // The default option for the sendable chooser is set, and is thrown onto the Dashboard.
-    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+    m_chooser.setDefaultOption("Autonomous Command", null);
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
@@ -112,6 +112,6 @@ public class RobotContainer {
   
   // This function returns the command to be executed in autonomous mode.
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    // return m_chooser.getSelected();
   }
 }

@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimeLightWrapper;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class ShooterSubsystem extends SubsystemBase {
   private final WPI_TalonFX motor = new WPI_TalonFX(10, Constants.CANIVORE);

@@ -49,5 +49,5 @@ public final class Constants {
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(78); // FIXME Measure and set back right steer offset
 
     public static String RIO_CANBUS = "rio";
-    public static String CANIVORE = "509CANIvore"
+    public static String CANIVORE = "509CANIvore";
 }
