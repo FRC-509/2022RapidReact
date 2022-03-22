@@ -6,10 +6,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class IntakeSpin extends CommandBase{
-    private boolean m_spinForward;
-
-    public IntakeSpin(boolean _spinForward) {
-        m_spinForward = _spinForward;
+    public IntakeSpin() {
         addRequirements(RobotContainer.s_intake);
     }
 
@@ -20,12 +17,7 @@ public class IntakeSpin extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(m_spinForward) {
-            RobotContainer.s_intake.spin(-0.25);
-        }
-        else {
-            RobotContainer.s_intake.spin(0.25);
-        }
+        RobotContainer.s_intake.spin(1.2);
     }
 
     // Called once the command ends or is interrupted.
