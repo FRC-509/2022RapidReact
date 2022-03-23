@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,7 +21,9 @@ import frc.robot.SDSConstants;
 public class SwerveDrive extends SubsystemBase {
 	public static final PIDController xController = new PIDController(1.5, 0, 0);
   	public static final PIDController yController = new PIDController(1.5, 0, 0);
-	
+	public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(SDSConstants.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND / 10, Math.PI / 4);
+	public static final ProfiledPIDController thetaController = new ProfiledPIDController(3.0d, 0, 0, kThetaControllerConstraints);
+
 	private final Field2d m_field = new Field2d();
 	public final SwerveDriveKinematics m_swerveKinematics = new SwerveDriveKinematics(
 		// Front left
@@ -51,6 +55,7 @@ public class SwerveDrive extends SubsystemBase {
 		m_frontRight = new SwerveModule(Constants.FRONT_RIGHT_MODULE_STEER_MOTOR, Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR, Constants.FRONT_RIGHT_MODULE_STEER_ENCODER, Constants.FRONT_RIGHT_MODULE_STEER_OFFSET, Constants.CANIVORE, Constants.CANIVORE);
 		m_pose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
 		m_swerveOdometry = new SwerveDriveOdometry(m_swerveKinematics, Rotation2d.fromDegrees(getYaw()), m_pose);
+		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 	}
 
 	public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double omega_rad_per_s, boolean fieldCentric) {

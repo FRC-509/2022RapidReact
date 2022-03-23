@@ -14,10 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.IntakeSpin;
+import frc.robot.commands.AimBot;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ShooterCommand;
@@ -43,8 +47,10 @@ public class RobotContainer {
 
   public static final GenericHID s_logiController = new GenericHID(2);
 
+  public static Trajectory trajectory = null;
+
   // A drop-down menu on the Smart Dashboard, allowing for the switching of autonomous routines.
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public RobotContainer() {
     // Configure the button bindings
@@ -63,8 +69,8 @@ public class RobotContainer {
     ));
     
     // The default option for the sendable chooser is set, and is thrown onto the Dashboard.
-    m_chooser.setDefaultOption("Autonomous Command", null);
-    SmartDashboard.putData("Command Chooser", m_chooser);
+    // m_chooser.setDefaultOption("Autonomous Command", null);
+    // SmartDashboard.putData("Command Chooser", m_chooser);
   }
 
   private void configureButtonBindings() {
@@ -112,6 +118,7 @@ public class RobotContainer {
   
   // This function returns the command to be executed in autonomous mode.
   public Command getAutonomousCommand() {
-    // return m_chooser.getSelected();
+    TrajectoryBuilderWrapper builder = new TrajectoryBuilderWrapper("paths/Unnamed.wpilib.json");
+    return builder.getPathFollowingCommand();
   }
 }
