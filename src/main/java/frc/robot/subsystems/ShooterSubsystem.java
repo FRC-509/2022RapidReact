@@ -1,25 +1,13 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import java.util.ResourceBundle.Control;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimeLightWrapper;
-import frc.robot.RobotContainer;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final WPI_TalonFX motor = new WPI_TalonFX(10);
-  private final WPI_TalonFX motor2 = new WPI_TalonFX(11);
+  private final WPI_TalonFX motor = new WPI_TalonFX(10, Constants.CANIVORE);
+  private final WPI_TalonFX motor2 = new WPI_TalonFX(11, Constants.CANIVORE);
   
   private MotorControllerGroup m_motorGroup = new MotorControllerGroup(motor, motor2);
   
@@ -38,15 +26,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot(double speed) {
-    m_motorGroup.set(speed);
-    LimeLightWrapper.turnON();
-    new DefaultDriveCommand(() -> 0.0, () -> 0.0, () -> -LimeLightWrapper.getSkewAngle());
-    double delta_dist = (73.5d / Math.tan(35.0d))-getDistanceToTarget();
-    new DefaultDriveCommand(() -> 0.0, () -> delta_dist, () -> 0);
-  }
-
-  public double getDistanceToTarget() {
-    //height between limelight and target
-    return 73.5d / Math.tan(LimeLightWrapper.getCamtranData()[4] + 35.0d);
+    if (speed == 0.0d)
+      m_motorGroup.set(speed);
+    else
+      m_motorGroup.set(speed / 2.0d + 0.5);
   }
 }
