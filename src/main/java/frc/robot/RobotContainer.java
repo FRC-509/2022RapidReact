@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimBot;
 import frc.robot.commands.IntakeSpin;
+import frc.robot.commands.IntakeUpDown;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
@@ -53,8 +54,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
@@ -85,6 +86,9 @@ public class RobotContainer {
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin());
+
+    JoystickButton LEFT_STICK_BUTTON_2 = new JoystickButton(l_stick, 2);
+    LEFT_STICK_BUTTON_2.whenPressed(new IntakeUpDown());
 
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));

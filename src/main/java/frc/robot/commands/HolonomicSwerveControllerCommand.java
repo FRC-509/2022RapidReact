@@ -2,30 +2,20 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 
 public class HolonomicSwerveControllerCommand extends CommandBase {
 
-  private HolonomicDriveController holonomicController;
+  private HolonomicDriveController m_holonomicController;
   private Trajectory trajectory;
   private double startTime;
   private int stateNumber;
   
   public HolonomicSwerveControllerCommand(Trajectory trajectory) {
-    holonomicController = new HolonomicDriveController(
-		new PIDController(1, 0, 0), // X Controller
-		new PIDController(1, 0, 0), // Y Controller
-		new ProfiledPIDController(1, 0, 0, // Theta Controller
-		new TrapezoidProfile.Constraints(DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, 2 * Math.PI))
-	); // Constraints are maxVel and maxAccel both in radians
-
+    m_holonomicController = RobotContainer.s_drivetrainSubsystem.getHolonomicDriveController();
     this.trajectory = trajectory;
     stateNumber = 0;
   }
@@ -48,8 +38,7 @@ public class HolonomicSwerveControllerCommand extends CommandBase {
     }
        
     Trajectory.State nextState = trajectory.sample(trajTime);
-    ChassisSpeeds adjustedSpeeds = holonomicController.calculate(DrivetrainSubsystem.m_odometer.getPoseMeters(), nextState, nextState.poseMeters.getRotation());
-	
+    ChassisSpeeds adjustedSpeeds = m_holonomicController.calculate(RobotContainer.s_drivetrainSubsystem.getPose(), nextState, nextState.poseMeters.getRotation());
     RobotContainer.s_drivetrainSubsystem.drive(adjustedSpeeds);
   }
 
