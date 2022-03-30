@@ -24,7 +24,6 @@ public class HolonomicSwerveControllerCommand extends CommandBase {
   public void initialize() {
 	  startTime = Timer.getFPGATimestamp();
   }
-
   
   @Override
   public void execute() {
@@ -36,7 +35,7 @@ public class HolonomicSwerveControllerCommand extends CommandBase {
         break;
       }
     }
-       
+    
     Trajectory.State nextState = trajectory.sample(trajTime);
     ChassisSpeeds adjustedSpeeds = m_holonomicController.calculate(RobotContainer.s_drivetrainSubsystem.getPose(), nextState, nextState.poseMeters.getRotation());
     RobotContainer.s_drivetrainSubsystem.drive(adjustedSpeeds);

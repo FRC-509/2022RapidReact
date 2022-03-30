@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimBot;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.commands.IntakeUpDown;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ElevatorCommand;
@@ -37,7 +37,7 @@ public class RobotContainer {
   public static final Indexer s_indexer = new Indexer();
   public static final Intake s_intake = new Intake();
   public static final Elevator s_elevator = new Elevator();
-  public static final DrivetrainSubsystem s_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final DriveTrainSubsystem s_drivetrainSubsystem = new DriveTrainSubsystem();
 
   public static final Joystick l_stick = new Joystick(1);
   public static final Joystick r_stick = new Joystick(0);
@@ -54,9 +54,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      () -> modifyAxis(l_stick.getY()) * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(l_stick.getX()) * DriveTrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> modifyAxis(r_stick.getX()) * DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     s_elevator.setDefaultCommand(new ElevatorCommand(
