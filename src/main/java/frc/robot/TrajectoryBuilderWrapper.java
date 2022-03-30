@@ -37,6 +37,10 @@ public class TrajectoryBuilderWrapper {
         );
     }
 
+    public Trajectory getTrajectory() {
+        return trajectory;
+    }
+
     public HolonomicSwerveControllerCommand getHolonomicSwerveControllerCommand() {
         return new HolonomicSwerveControllerCommand(trajectory);
     }

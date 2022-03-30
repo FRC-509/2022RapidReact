@@ -30,8 +30,8 @@ public class HolonomicSwerveControllerCommand extends CommandBase {
     double trajTime = 0.0;
     for(int idx = stateNumber; idx < trajectory.getStates().size(); idx++) {
       if(trajectory.getStates().get(idx).timeSeconds < Timer.getFPGATimestamp() - startTime) {
-        trajTime = trajectory.getStates().get(idx - 1).timeSeconds;
-        stateNumber = idx - 1;
+        trajTime = trajectory.getStates().get(idx).timeSeconds;
+        stateNumber = idx;
         break;
       }
     }

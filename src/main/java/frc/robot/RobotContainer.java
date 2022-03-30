@@ -1,12 +1,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.auto1;
 import frc.robot.commands.AimBot;
 import frc.robot.commands.IntakeSpin;
 import frc.robot.commands.IntakeDown;
@@ -15,16 +17,23 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.HolonomicSwerveControllerCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommand;
+
+import java.nio.file.Path;
+
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -123,14 +132,33 @@ public class RobotContainer {
   }
   
   public static Command getAutonomousCommand() {
-    SwerveControllerCommand swerveControllerCommand = new TrajectoryBuilderWrapper("paths/Unnamed.wpilib.json").getSwerveControllerCommand();
     
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
-      swerveControllerCommand,
-      new InstantCommand(() -> s_drivetrainSubsystem.stopModules()),
-      new AimBot(),
-      new ShooterCommand(() -> 0.35).withTimeout(2.0d)
-    );
+    TrajectoryBuilderWrapper wrapper = new TrajectoryBuilderWrapper("paths/rishabruh.wpilib.json");
+    SwerveControllerCommand swerveControllerCommand = wrapper.getSwerveControllerCommand();
+    
+    // return new SequentialCommandGroup(
+    //   new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(wrapper.getTrajectory().getInitialPose())),
+    //   swerveControllerCommand,
+    //   new InstantCommand(() -> s_drivetrainSubsystem.stopModules()),
+    //   new AimBot(),
+    //   new ShooterCommand(() -> 0.35).withTimeout(2.0d)
+    // );
+    
+    return new auto1();
+    
+    // return new SequentialCommandGroup(
+    //   // //drive forwards + succ      
+    //   // new ParallelCommandGroup(
+    //   //   //Drive forwards off tarmac
+    //   //   new DefaultDriveCommand(() -> -0.4, () -> 0, 0.0d).withTimeout(1),
+    //   //   //succ 1
+    //   //   new SequentialCommandGroup(IntakeDown(), IntakeSpin().withTimeout(0.5), IntakeUp())
+    //   // ),
+
+    //   // //turn and shoot
+    //   // new
+      
+    // );
   }
+  
 }
