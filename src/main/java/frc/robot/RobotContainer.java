@@ -85,7 +85,9 @@ public class RobotContainer {
     // Button 1 on the right stick must be held down to shoot.
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
+    LEFT_STICK_BUTTON_1.whenPressed(new IntakeUpDown());
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin());
+    LEFT_STICK_BUTTON_1.whenReleased(new IntakeUpDown());
 
     JoystickButton LEFT_STICK_BUTTON_2 = new JoystickButton(l_stick, 2);
     LEFT_STICK_BUTTON_2.whenPressed(new IntakeUpDown());
