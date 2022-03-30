@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimBot;
 import frc.robot.commands.IntakeSpin;
+import frc.robot.commands.IntakeUP;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.IntakeDown;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,13 +53,21 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
-    s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-      () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));
-
+    if(!l_stick.getRawButton(1)){
+      //LimeLightWrapper.turnOFF();
+      s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+        () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> modifyAxis(r_stick.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      ));
+    } else {
+      //LimeLightWrapper.turnON();
+      s_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+        () -> modifyAxis(l_stick.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> modifyAxis(l_stick.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> modifyAxis(-0.01 * LimeLightWrapper.getX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      ));
+    }
     s_elevator.setDefaultCommand(new ElevatorCommand(
       () -> s_logiController.getRawAxis(1),
       () -> -s_logiController.getRawAxis(5)
@@ -82,10 +92,12 @@ public class RobotContainer {
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
     RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> l_stick.getRawAxis(3)));
     // Button 1 on the right stick must be held down to shoot.
+    JoystickButton LEFT_STICK_BUTTON_2 = new JoystickButton(l_stick, 2);
 
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
+    LEFT_STICK_BUTTON_1.whenPressed(new IntakeDown());
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin());
-
+    LEFT_STICK_BUTTON_1.whenReleased(new IntakeUP());
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
     
