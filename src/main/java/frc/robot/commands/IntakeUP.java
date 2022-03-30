@@ -7,11 +7,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeUP extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  //private final Intake m_subsystem;
-
-  public IntakeUP() {
+public class IntakeUp extends CommandBase {
+  public IntakeUp() {
     addRequirements(RobotContainer.s_intake);
   }
   

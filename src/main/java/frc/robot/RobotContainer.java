@@ -90,7 +90,7 @@ public class RobotContainer {
     JoystickButton LEFT_STICK_BUTTON_1 = new JoystickButton(l_stick, 1);
     LEFT_STICK_BUTTON_1.whenPressed(new IntakeDown());
     LEFT_STICK_BUTTON_1.whenHeld(new IntakeSpin());
-    LEFT_STICK_BUTTON_1.whenReleased(new IntakeUP());
+    LEFT_STICK_BUTTON_1.whenReleased(new IntakeUp());
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
     
