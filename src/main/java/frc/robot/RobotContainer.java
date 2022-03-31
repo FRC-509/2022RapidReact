@@ -102,7 +102,8 @@ public class RobotContainer {
     LEFT_STICK_BUTTON_1.whenReleased(new IntakeUp());
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
-    
+    JoystickButton LEFT_STICK_BUTTON_4 = new JoystickButton(l_stick, 4);
+    LEFT_STICK_BUTTON_4.whenPressed(new AimBot());
     JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
     RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand()); 
   }
