@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,6 +15,7 @@ public class Indexer extends SubsystemBase {
 
   public Indexer() {
     motor.setInverted(false);
+    //motor.setNeutralMode(NeutralMode.Brake);
   }
   
   @Override

@@ -40,16 +40,20 @@ public class Intake extends SubsystemBase {
         if (speed == 0){
            
             motor.set(ControlMode.PercentOutput, 0.0d);
-             m_intakeDoublePCM.set(Value.kReverse);}
+             m_intakeDoublePCM.set(intake);
+        }
         else {
-            speed = speed / 2.0d + 0.5d;
-            if(speed > 0.2) {
-                motor.set(ControlMode.PercentOutput, -speed);
-                m_intakeDoublePCM.set(Value.kReverse);
-            }
-            else {
-                motor.set(ControlMode.PercentOutput, 0.0d);
-            }
+            //motor.set(ControlMode.PercentOutput, speed);
+            //speed = speed / 2.0d;
+            
+            motor.set(ControlMode.PercentOutput, -speed);
+            m_intakeDoublePCM.set(intake);
+            // } else if (speed < -0.2){
+            //     motor.set(ControlMode.PercentOutput, -speed);
+            //     m_intakeDoublePCM.set(Value.kForward);
+            // } else {
+            //     motor.set(ControlMode.PercentOutput, 0.0d);
+            // }
         }
     }
 }
