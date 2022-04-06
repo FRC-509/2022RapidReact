@@ -79,7 +79,7 @@ public class Elevator extends SubsystemBase {
         return (currentPos - ArmPosHorizontal) / ArmTicksPerDegree;
         // return (armMotor1.getSelectedSensorPosition() + armMotor2.getSelectedSensorPosition())/2.0d + ARM_ANGLE_OFFSET;
     }
-
+    
     public void setArmAngleDegrees(double deg) {
         armMotor1.set(ControlMode.Position, (deg + ArmPosHorizontal) * ArmTicksPerDegree);
         armMotor2.set(ControlMode.Position, (deg + ArmPosHorizontal) * ArmTicksPerDegree);
