@@ -12,11 +12,9 @@ public class AimBot extends SequentialCommandGroup {
   public AimBot() {
     addCommands(
       // keep turning until target is visible
-      new DefaultDriveCommand(() -> 0.0,() -> 0.0, () -> -1).withInterrupt( () -> LimeLightWrapper.hasTarget()),
+      new DefaultDriveCommand(() -> 0.0,() -> 0.0, () -> -2, () -> true).withInterrupt( () -> LimeLightWrapper.hasTarget()),
       // keep turning until horizontal offset is 0 
-      new DefaultDriveCommand(() -> 0.0,() -> 0.0, () -> LimeLightWrapper.getX()/5).withInterrupt( () -> isCloseToZero(LimeLightWrapper.getX(), 0.1)),
-      // keep moving until vertical offset is 0
-      new DefaultDriveCommand(() -> 0.0,() -> 1.0, () -> 0.0).withInterrupt( () -> isCloseToZero(LimeLightWrapper.getY(), 0.1) )
+      new DefaultDriveCommand(() -> 0.0,() -> 0.0, () -> LimeLightWrapper.getX()/10, () -> true).withInterrupt( () -> isCloseToZero(LimeLightWrapper.getX(), 0.1))
     );
   }
 }

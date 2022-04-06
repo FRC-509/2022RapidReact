@@ -19,11 +19,11 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("bottom", bottomInput.get());
-    SmartDashboard.putBoolean("top", topInput.get());
+    SmartDashboard.putBoolean("bottomInput", bottomInput.get());
+    SmartDashboard.putBoolean("topInput", topInput.get());
     if (topInput.get()) {
       if (!bottomInput.get())
-        moveTheThing(0.1d);
+        moveTheThing(0.25d);
       else
         moveTheThing(0.0d);
     }

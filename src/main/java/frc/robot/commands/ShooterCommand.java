@@ -10,7 +10,7 @@ public class ShooterCommand extends CommandBase {
     
     public ShooterCommand(DoubleSupplier speed) {
         m_speed = speed;
-        addRequirements(RobotContainer.s_shooterSubsystem);
+        addRequirements(RobotContainer.getShooter());
     }
 
     // Called when the command is initially scheduled.
@@ -20,13 +20,13 @@ public class ShooterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        RobotContainer.s_shooterSubsystem.shoot(.35);
+        RobotContainer.getShooter().shoot(m_speed.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.s_shooterSubsystem.shoot(0.0d);
+        RobotContainer.getShooter().shoot(0.0d);
     }
 
     // Returns true when the command should end.

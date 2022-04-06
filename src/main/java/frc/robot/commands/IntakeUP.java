@@ -1,30 +1,27 @@
 package frc.robot.commands;
 
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class IntakeUp extends CommandBase {
   public IntakeUp() {
-    addRequirements(RobotContainer.s_intake);
+    addRequirements(RobotContainer.getIntake());
   }
   
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.getIntake().setSolenoidValue(Value.kForward);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-    {//RobotContainer.s_intake.upDown(Value.kOff);
-      RobotContainer.s_intake.upDown();
-    }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.s_intake.upDown();
+    RobotContainer.getIntake().setSolenoidValue(Value.kReverse);
   }
 
   // Returns true when the command should end.

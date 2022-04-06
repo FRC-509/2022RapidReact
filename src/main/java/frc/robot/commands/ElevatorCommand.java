@@ -12,7 +12,7 @@ public class ElevatorCommand extends CommandBase {
   public ElevatorCommand(DoubleSupplier armYSupplier, DoubleSupplier elevatorYSupplier) {
     m_armYSupplier = armYSupplier;
     m_elevatorYSupplier = elevatorYSupplier;
-    addRequirements(RobotContainer.s_elevator);
+    addRequirements(RobotContainer.getElevator());
   }
 
   // Called when the command is initially scheduled.
@@ -22,15 +22,15 @@ public class ElevatorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.s_elevator.moveElevator(m_elevatorYSupplier.getAsDouble());
-    RobotContainer.s_elevator.moveArm(m_armYSupplier.getAsDouble());
+    RobotContainer.getElevator().moveElevator(m_elevatorYSupplier.getAsDouble());
+    RobotContainer.getElevator().moveArm(m_armYSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.s_elevator.moveElevator(0.0d);
-    RobotContainer.s_elevator.moveArm(0.0d);
+    RobotContainer.getElevator().moveElevator(0.0d);
+    RobotContainer.getElevator().moveArm(0.0d);
   }
 
   // Returns true when the command should end.

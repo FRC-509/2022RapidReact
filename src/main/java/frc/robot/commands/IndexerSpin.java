@@ -1,10 +1,22 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class IndexerCommand extends CommandBase {
-  public IndexerCommand() {
+public class IndexerSpin extends CommandBase {
+
+  private final DoubleSupplier m_speedSupplier;
+
+  public IndexerSpin(DoubleSupplier speedSupplier) {
+    m_speedSupplier = speedSupplier;
+    addRequirements(RobotContainer.getIndexer());
+  }
+
+  // Default Constructor. Sets speed supplier to always return 0.3.
+  public IndexerSpin() {
+    m_speedSupplier = () -> 0.3d;
     addRequirements(RobotContainer.getIndexer());
   }
 
@@ -15,7 +27,7 @@ public class IndexerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.getIndexer().moveTheThing(0.2);
+    RobotContainer.getIndexer().moveTheThing(m_speedSupplier.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

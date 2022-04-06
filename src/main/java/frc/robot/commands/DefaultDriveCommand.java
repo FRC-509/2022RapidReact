@@ -4,6 +4,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class DefaultDriveCommand extends CommandBase {
@@ -11,6 +12,19 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier m_translationXSupplier;
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
+    private final BooleanSupplier m_robotRelativeSupplier;
+
+    public DefaultDriveCommand(DoubleSupplier translationXSupplier,
+                               DoubleSupplier translationYSupplier,
+                               DoubleSupplier rotationSupplier,
+                               BooleanSupplier driveRobotRelative) {
+        this.m_translationXSupplier = translationXSupplier;
+        this.m_translationYSupplier = translationYSupplier;
+        this.m_rotationSupplier = rotationSupplier;
+        this.m_robotRelativeSupplier = driveRobotRelative;
+
+        addRequirements(RobotContainer.getDriveTrainSubsystem());
+    }
 
     public DefaultDriveCommand(DoubleSupplier translationXSupplier,
                                DoubleSupplier translationYSupplier,
@@ -18,33 +32,38 @@ public class DefaultDriveCommand extends CommandBase {
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
         this.m_rotationSupplier = rotationSupplier;
+        this.m_robotRelativeSupplier = () -> true;
 
-        addRequirements(RobotContainer.s_drivetrainSubsystem);
+        addRequirements(RobotContainer.getDriveTrainSubsystem());
     }
 
     @Override
     public void execute() {
-        // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        RobotContainer.s_drivetrainSubsystem.drive(
+        // Drive relative to the robot.
+        if (m_robotRelativeSupplier.getAsBoolean()) {
+            RobotContainer.getDriveTrainSubsystem().drive(
                 new ChassisSpeeds(
                     m_translationXSupplier.getAsDouble(),
                     m_translationYSupplier.getAsDouble(),
                     m_rotationSupplier.getAsDouble()
                 )
-                /*
+            );
+        }
+        // Drive relative to the field.
+        else {
+            RobotContainer.getDriveTrainSubsystem().drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     m_translationXSupplier.getAsDouble(),
                     m_translationYSupplier.getAsDouble(),
                     m_rotationSupplier.getAsDouble(),
-                    RobotContainer.s_drivetrainSubsystem.getGyroscopeRotation()
+                    RobotContainer.getDriveTrainSubsystem().getGyroscopeRotation()
                 )
-                */
-        );
-        
+            );
+        }        
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.s_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        RobotContainer.getDriveTrainSubsystem().drive(new ChassisSpeeds(0.0, 0.0, 0.0));
     }
 }
