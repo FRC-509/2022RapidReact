@@ -16,7 +16,7 @@ public class IntakeSpin extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        RobotContainer.s_intake.spin(2.0d, Value.kReverse);
+        RobotContainer.s_intake.spin(1.0d, Value.kReverse);
     }
 
     // Called once the command ends or is interrupted.

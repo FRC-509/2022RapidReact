@@ -220,6 +220,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_backRightModule.set(0,0);
   }
 
+  public void zeroTheWheels() {
+    /*
+    m_frontLeftModule.set(0, -FRONT_LEFT_MODULE_STEER_OFFSET);
+    m_frontRightModule.set(0, -FRONT_RIGHT_MODULE_STEER_OFFSET);
+    m_backLeftModule.set(0, -BACK_LEFT_MODULE_STEER_OFFSET);
+    m_backRightModule.set(0, -BACK_RIGHT_MODULE_STEER_OFFSET);
+    */
+  }
+
   public void setModuleStates(SwerveModuleState[] states) {
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
@@ -229,6 +238,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
+    // james if you are feeling like a daredevil uncomment this out
+    /*
+    if (m_chassisSpeeds.vxMetersPerSecond == 0 && m_chassisSpeeds.vyMetersPerSecond == 0 && m_chassisSpeeds.omegaRadiansPerSecond == 0) {
+      zeroTheWheels();
+    }
+    */
+    
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     setModuleStates(states);
   }

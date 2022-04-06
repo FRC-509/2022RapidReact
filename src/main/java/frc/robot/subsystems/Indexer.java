@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,6 +15,7 @@ public class Indexer extends SubsystemBase {
 
   public Indexer() {
     motor.setInverted(false);
+    //motor.setNeutralMode(NeutralMode.Brake);
   }
   
   @Override
@@ -23,7 +25,7 @@ public class Indexer extends SubsystemBase {
     SmartDashboard.putBoolean("top", topInput.get());
     if (topInput.get()) {
       if (!bottomInput.get())
-        moveTheThing(0.1d);
+        moveTheThing(0.25d);
       else
         moveTheThing(0.0d);
     }

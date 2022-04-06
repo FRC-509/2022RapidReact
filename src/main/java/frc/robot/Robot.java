@@ -1,6 +1,10 @@
 
 package frc.robot;
 import frc.robot.subsystems.Intake;
+
+import static frc.robot.RobotContainer.cam;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,7 +27,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     LimeLightWrapper.turnOFF();
     System.out.println("[Robot::Init] Initalizing Default Commands...");
-   // Intake.intakeInit();
+    CameraServer.startAutomaticCapture();
+
+    RobotContainer.s_drivetrainSubsystem.zeroTheWheels();
 
   }
 
@@ -56,7 +62,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     LimeLightWrapper.turnON();
-    m_autonomousCommand = RobotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

@@ -19,9 +19,9 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class auto1 extends SequentialCommandGroup {
+public class five_ball extends SequentialCommandGroup {
   /** Creates a new auto1. */
-  public auto1() {
+  public five_ball() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -36,11 +36,11 @@ public class auto1 extends SequentialCommandGroup {
           ),
           new ParallelRaceGroup(
             //forward
-            new DefaultDriveCommand(() -> -2.0d, () -> 0.2d, ()-> -0.1d),
+            new DefaultDriveCommand(() -> -1.0d, () -> 0.2d, ()-> -0.1d),
             //intake
             new IntakeSpin(),
             //waiting un segundo
-            new WaitCommand(.75)
+            new WaitCommand(1.0)
           ),
           //two balls aquired
           //intake up
@@ -48,27 +48,37 @@ public class auto1 extends SequentialCommandGroup {
             new IntakeUp(),
             new WaitCommand(0.1)
           ),
+          //backing up from wall
+          new ParallelRaceGroup(
+            new DefaultDriveCommand(() -> 1.0d, () -> 0.0d, () -> 0.0d),
+            new WaitCommand(0.5)
+          ),
           //time to turn and shoot
           new ParallelRaceGroup(
-            new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> 4.0d),
-            new WaitCommand(0.8)
+            new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> 2.7d),
+            new WaitCommand(1.2)
           ),
           //aim
           new ParallelRaceGroup(
             new AimBot(),
-            new WaitCommand(1.8)
+            new WaitCommand(1.0)
           ),
           //shoot
           new ParallelRaceGroup(
-            new ShooterCommand(()  -> 0.65d),
+            new ShooterCommand(()  -> 0.32d),
             new IndexerCommand(),
-            new WaitCommand(2)
+            new WaitCommand(2.5)
+          ),
+          //backing up
+          new ParallelRaceGroup(
+            new DefaultDriveCommand(() -> 2.0d, () -> 0.0d, () -> 0.0d),
+            new WaitCommand(0.25)
           ),
           //two balls shot, on to the third
           //turn to next ball
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> -4.0d),
-            new WaitCommand(0.35)
+            new WaitCommand(0.45)
           ),
           //intake down
           new ParallelRaceGroup(
@@ -77,7 +87,7 @@ public class auto1 extends SequentialCommandGroup {
           ),
           //drive and intake
           new ParallelRaceGroup(
-            new DefaultDriveCommand(() -> -2.0d, () -> 0.0d, () -> 0.0d),
+            new DefaultDriveCommand(() -> -2.0d, () -> 0.35d, () -> 0.0d),
             new IntakeSpin(),
             new WaitCommand(1.2)
           ),
@@ -89,7 +99,7 @@ public class auto1 extends SequentialCommandGroup {
           //turn to hub
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> 4.0d),
-            new WaitCommand(0.45)
+            new WaitCommand(0.5)
           ),
           //aim
           new ParallelRaceGroup(
@@ -103,9 +113,10 @@ public class auto1 extends SequentialCommandGroup {
             new IndexerCommand(),
             new WaitCommand(2)
           ),
+          //this shit is experimental
           //turn to next ball ( 180)
           new ParallelRaceGroup(
-            new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> -4.0d),
+            new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> -3.8d),
             new WaitCommand(.6)
           ),
           //intake down
@@ -117,7 +128,7 @@ public class auto1 extends SequentialCommandGroup {
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> -4.0d, () -> 0.0d, () -> -1.0d),
             new IntakeSpin(),
-            new WaitCommand(2)
+            new WaitCommand(1.6)
           ),
           //wait for zach's slow ass to give ball
           new ParallelRaceGroup(
@@ -132,7 +143,7 @@ public class auto1 extends SequentialCommandGroup {
           //drive moment
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> -4.0d, () -> 0.0d, () -> 0.0d),
-            new WaitCommand(2)
+            new WaitCommand(1.5)
           ),
           //aim
           new ParallelRaceGroup(
@@ -148,7 +159,7 @@ public class auto1 extends SequentialCommandGroup {
           )
         ),
         //cuts off the robot at end of auto (in case)
-        new WaitCommand(14.5)
+        new WaitCommand(14.9)
       )
     );
   }
