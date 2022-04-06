@@ -39,8 +39,14 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
+
+        // Zero the wheels, if the input data recieved is 0.0d.
+        if (m_translationXSupplier.getAsDouble() == 0.0d && m_translationYSupplier.getAsDouble() == 0.0d && m_rotationSupplier.getAsDouble() == 0.0d) {
+            RobotContainer.getDriveTrainSubsystem().zeroTheWheels();
+        }
+        
         // Drive relative to the robot.
-        if (m_robotRelativeSupplier.getAsBoolean()) {
+        else if (m_robotRelativeSupplier.getAsBoolean()) {
             RobotContainer.getDriveTrainSubsystem().drive(
                 new ChassisSpeeds(
                     m_translationXSupplier.getAsDouble(),
@@ -49,6 +55,7 @@ public class DefaultDriveCommand extends CommandBase {
                 )
             );
         }
+        
         // Drive relative to the field.
         else {
             RobotContainer.getDriveTrainSubsystem().drive(

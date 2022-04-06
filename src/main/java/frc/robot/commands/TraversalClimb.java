@@ -26,9 +26,10 @@ public class TraversalClimb extends SequentialCommandGroup {
     Elevator elevator = RobotContainer.getElevator();
     DriveTrainSubsystem driveTrain = RobotContainer.getDriveTrainSubsystem();
     Pigeon2 gyro = driveTrain.getGyro();
+    double startgyro = gyro.getPitch();
 
     System.out.println("[TraversalClimb] 509 Says: \"Hey, Let\'s Go Climbing!\"");
-
+    
     addCommands(
 
       // move arms backward -21.8 degrees

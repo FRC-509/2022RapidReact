@@ -193,6 +193,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //m_navx.zeroYaw();
   }
 
+  private static boolean isCloseToZero(double in, double threshold) {
+    return in < threshold && in > -threshold;
+  }
+
   public Rotation2d getGyroscopeRotation() {
     //if (m_navx.isMagnetometerCalibrated())
     //  return Rotation2d.fromDegrees(m_navx.getFusedHeading()+90);
@@ -223,6 +227,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_backRightModule.set(0,0);
   }
 
+  public void zeroTheWheels() {
+    m_frontLeftModule.set(0, -m_frontLeftModule.getSteerAngle());
+    m_frontRightModule.set(0, -m_frontRightModule.getSteerAngle());
+    m_backLeftModule.set(0, -m_backLeftModule.getSteerAngle());
+    m_backRightModule.set(0, -m_backRightModule.getSteerAngle());
+  }
+
+  public boolean areTheWheelsZeroed() {
+    return isCloseToZero(m_frontLeftModule.getSteerAngle(), 0.1) &&
+    isCloseToZero(m_frontRightModule.getSteerAngle(), 0.1) &&
+    isCloseToZero(m_backLeftModule.getSteerAngle(), 0.1) &&
+    isCloseToZero(m_backRightModule.getSteerAngle(), 0.1);
+  }
+  
   public void setModuleStates(SwerveModuleState[] states) {
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());

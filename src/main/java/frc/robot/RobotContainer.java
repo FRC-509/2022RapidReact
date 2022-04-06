@@ -7,20 +7,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autonomous.*;
-import frc.robot.commands.AimBot;
-import frc.robot.commands.IntakeSpin;
-import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.Elevator;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.ElevatorCommand;
-import frc.robot.commands.IndexerSpin;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.ShooterCommand;
+import frc.robot.autonomous.*;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -101,9 +92,13 @@ public class RobotContainer {
       () -> -s_logiController.getRawAxis(5)
     ));
     
-    m_chooser.setDefaultOption("2-ball auto, use this", new TwoBall());
-    m_chooser.addOption("3-ball auto, use this if you dare", new ThreeBall());
-    m_chooser.addOption("5-ball auto, DO NOT USE unless THERE IS NO OTHER OPTION", new FiveBall());
+    m_chooser.setDefaultOption("2-Ball Auto", new TwoBall());
+    m_chooser.addOption("3-Ball Auto", new ThreeBall());
+    m_chooser.addOption("5-Ball Auto", new FiveBall());
+    m_chooser.addOption("6-Ball Auto", new FiveBall());
+    m_chooser.addOption("7-Ball Auto", new FiveBall());
+    m_chooser.addOption("Extreme Auto", new FiveBall());
+    m_chooser.addOption("A Very Graciously Professional Autonomous Routine", new FiveBall());
 
     SmartDashboard.putData("Command Chooser", m_chooser);
   }
@@ -134,6 +129,9 @@ public class RobotContainer {
 
     JoystickButton LEFT_STICK_BUTTON_4 = new JoystickButton(l_stick, 4);
     LEFT_STICK_BUTTON_4.whenHeld(new AimBot());
+
+    JoystickButton LEFT_STICK_BUTTON_10 = new JoystickButton(l_stick, 10);
+    LEFT_STICK_BUTTON_10.whenPressed(new ZeroTheWheels());
 
     JoystickButton LEFT_STICK_BUTTON_11 = new JoystickButton(l_stick, 11);
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
