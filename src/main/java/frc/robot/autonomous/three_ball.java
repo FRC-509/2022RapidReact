@@ -66,11 +66,19 @@ public class three_ball extends SequentialCommandGroup {
           ),
           //shoot spin up
           new SequentialCommandGroup(
+<<<<<<< HEAD
             new ShooterCommand(()  -> true)
           ).withTimeout(0.5),
           //shoot
           new ParallelCommandGroup(
             new ShooterCommand(()  -> true),
+=======
+            new ShooterCommand(()  -> 0.32d)
+          ).withTimeout(0.5),
+          //shoot
+          new ParallelCommandGroup(
+            new ShooterCommand(()  -> 0.32d),
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
             new IndexerCommand()
           ).withTimeout(2),
           //backing up
@@ -113,7 +121,11 @@ public class three_ball extends SequentialCommandGroup {
           //shoot
           //shot 3rd
           new ParallelCommandGroup(
+<<<<<<< HEAD
             new ShooterCommand(() -> true),
+=======
+            new ShooterCommand(()  -> 0.32d),
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
             new IndexerCommand()
           ).withTimeout(2)
           //this shit is experimental

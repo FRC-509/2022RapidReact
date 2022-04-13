@@ -20,7 +20,11 @@ public class ShooterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+<<<<<<< HEAD
         RobotContainer.s_shooterSubsystem.shoot(m_shooting.getAsBoolean());
+=======
+        RobotContainer.s_shooterSubsystem.shoot(m_speed.getAsDouble());
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
     }
 
     // Called once the command ends or is interrupted.

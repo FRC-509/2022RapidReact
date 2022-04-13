@@ -29,6 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run when in simulation
   }
 
+<<<<<<< HEAD
   public void shoot(boolean shooting) {
     // if (speed == 0.0d){
     //   m_motorGroup.set(speed);
@@ -54,5 +55,21 @@ public class ShooterSubsystem extends SubsystemBase {
       motor.set(ControlMode.Velocity, speed);
       motor2.set(ControlMode.Velocity, -speed);
     }
+=======
+  public void shoot(double speed) {
+    if (speed == 0.0d){
+      m_motorGroup.set(speed);
+    } else {
+      m_motorGroup.set(speed / 2.0d + 0.5);
+    }
+
+    // if (speed == 0.0d){
+    //   motor.set(ControlMode.Velocity, speed);
+    //   motor2.set(ControlMode.Velocity, speed);
+    // } else {
+    //   motor.set(ControlMode.Velocity, speed / 2.0d + 0.5);
+    //   motor2.set(ControlMode.Velocity, speed / 2.0d + 0.5);
+    // }
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
   }
 }

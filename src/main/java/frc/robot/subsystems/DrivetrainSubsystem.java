@@ -257,8 +257,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
       zeroTheWheels();
     }
     */
+<<<<<<< HEAD
     SmartDashboard.putNumber("Pigeon YAW", m_pigeon.getYaw());
     SmartDashboard.putString("Gyroscope Rotation", getGyroscopeRotation().toString());
+=======
+    
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     setModuleStates(states);
   }

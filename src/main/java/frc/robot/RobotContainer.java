@@ -8,12 +8,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+<<<<<<< HEAD
 import frc.robot.autonomous.SixBallAuto;
 import frc.robot.autonomous.five_ball;
 import frc.robot.autonomous.three_ball;
 import frc.robot.autonomous.two_ball;
 import frc.robot.autonomous.new_five_ball;
 
+=======
+import frc.robot.autonomous.five_ball;
+import frc.robot.autonomous.three_ball;
+import frc.robot.autonomous.two_ball;
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import frc.robot.commands.AimBot;
@@ -70,6 +76,7 @@ public class RobotContainer {
   the last lambda in s_drivetrainSubsystem.setDefaultCommand with a call to this function.
   */
   public static double angularDeltaCalculator() {
+<<<<<<< HEAD
     if (r_stick.getRawButton(1) && LimeLightWrapper.hasTarget())
       return .75*Math.toRadians(LimeLightWrapper.getX() - (20*l_stick.getX())) * DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     else
@@ -77,6 +84,14 @@ public class RobotContainer {
   }
   public static UsbCamera cam = new UsbCamera("509cam", 1);
   //public static UsbCamera cam2 = new UsbCamera("509cam2", 1);
+=======
+    if (l_stick.getRawButton(3))
+      return -0.01 * LimeLightWrapper.getX() * DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
+    else
+      return modifyAxis(r_stick.getX()) * DriveTrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
+  }
+  public static UsbCamera cam = new UsbCamera("509cam", 0);
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,11 +116,17 @@ public class RobotContainer {
       () -> -s_logiController.getRawAxis(5)
     ));
     
+<<<<<<< HEAD
     // m_chooser.setDefaultOption("2-ball auto, use this", new two_ball());
     // m_chooser.addOption("3-ball auto, use this if you dare", new three_ball());
     // m_chooser.addOption("5-ball auto, DO NOT USE unless THERE IS NO OTHER OPTION", new five_ball());
     // m_chooser.addOption("test auto ", new testAuto());
     // m_chooser.addOption("paff weaveww owo", new SixBallAuto());
+=======
+    m_chooser.setDefaultOption("2-ball auto, use this", new two_ball());
+    m_chooser.addOption("3-ball auto, use this if you dare", new three_ball());
+    m_chooser.addOption("5-ball auto, DO NOT USE unless THERE IS NO OTHER OPTION", new five_ball());
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
 
     // SmartDashboard.putData("Command Chooser", m_chooser);
   }
@@ -121,8 +142,13 @@ public class RobotContainer {
 
     // The elevator uses the Logitech F310 controller and everything else uses one of the two Joysticks.
     JoystickButton RIGHT_STICK_BUTTON_1 = new JoystickButton(r_stick, 1);
+<<<<<<< HEAD
     RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> true));
     
+=======
+    RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> 0.32));
+    SmartDashboard.putNumber("shooter fuckvelocty", s_shooterSubsystem.motor.getSelectedSensorVelocity(10));
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
     //RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> ((l_stick.getRawAxis(3) + 1.0d)/2.0)));
     // Button 1 on the right stick must be held down to shoot.
     SmartDashboard.putNumber("bruh value two", ((l_stick.getRawAxis(3)+1.0)/2.0));
@@ -139,8 +165,12 @@ public class RobotContainer {
     LEFT_STICK_BUTTON_11.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
     
     JoystickButton LEFT_STICK_BUTTON_4 = new JoystickButton(l_stick, 4);
+<<<<<<< HEAD
     LEFT_STICK_BUTTON_4.whenPressed(new InstantCommand(s_drivetrainSubsystem::zeroGyroscope, s_drivetrainSubsystem));
     //RIGHT_STICK_BUTTON_1.whenHeld(new AimBot());
+=======
+    LEFT_STICK_BUTTON_4.whenHeld(new AimBot());
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
 
     JoystickButton RIGHT_STICK_BUTTON_3 = new JoystickButton(r_stick, 3);
     RIGHT_STICK_BUTTON_3.whenHeld(new IndexerCommand()); 
@@ -171,6 +201,13 @@ public class RobotContainer {
   }
   
   public Command getAutonomousCommand() {
+<<<<<<< HEAD
+=======
+    
+    TrajectoryBuilderWrapper wrapper = new TrajectoryBuilderWrapper("paths/rishabruh.wpilib.json");
+    SwerveControllerCommand swerveControllerCommand = wrapper.getSwerveControllerCommand();
+    
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
     // return new SequentialCommandGroup(
     //   new InstantCommand(() -> s_drivetrainSubsystem.resetOdometry(wrapper.getTrajectory().getInitialPose())),
     //   swerveControllerCommand,
@@ -178,8 +215,13 @@ public class RobotContainer {
     //   new AimBot(),
     //   new ShooterCommand(() -> 0.35).withTimeout(2.0d)
     // );
+<<<<<<< HEAD
     return m_chooser.getSelected();
     //return new SixBallAuto();
+=======
+    
+    return m_chooser.getSelected();
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
     
     // return new SequentialCommandGroup(
     //   // //drive forwards + succ      

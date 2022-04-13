@@ -65,7 +65,11 @@ public class two_ball extends SequentialCommandGroup {
           ),
           //shoot
           new ParallelRaceGroup(
+<<<<<<< HEAD
             new ShooterCommand(()  -> true),
+=======
+            new ShooterCommand(()  -> 0.32d),
+>>>>>>> 6dc5adb53cadb7f7a56e8c3675451a0c2f307ec7
             new IndexerCommand(),
             new WaitCommand(2.5)
           ),
