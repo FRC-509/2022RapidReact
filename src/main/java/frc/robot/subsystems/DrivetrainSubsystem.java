@@ -2,10 +2,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -20,9 +21,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-// import com.kauailabs.navx.frc.*;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
+import com.kauailabs.navx.frc.*;
 
 import static frc.robot.Constants.*;
 
@@ -32,7 +35,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
    * <p>
    * This can be reduced to cap the robot's maximum speed. Typically, this is useful during initial testing of the robot.
    */
-  public static final double MAX_VOLTAGE = 12.0;
+  public static final Joystick l_stick = new Joystick(1);
+  public static final Joystick r_stick = new Joystick(0);
+  public static final double MAX_VOLTAGE = 12.5;
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
@@ -55,9 +60,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND / Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
   public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND / 10, Math.PI / 4);
   
-  public final PIDController m_xController = new PIDController(1.5, 0, 0);
-  public final PIDController m_yController = new PIDController(1.5, 0, 0);
-  public final ProfiledPIDController m_thetaController = new ProfiledPIDController(3.0d, 0, 0, kThetaControllerConstraints);
+  public final PIDController m_xController = new PIDController(3, 0, 5.0);
+  public final PIDController m_yController = new PIDController(3, 0, 5.0);
+  public final ProfiledPIDController m_thetaController = new ProfiledPIDController(.80d, 0, 5.0d, kThetaControllerConstraints);
   
   public final HolonomicDriveController m_holonomicDriveController = new HolonomicDriveController(m_xController, m_yController, m_thetaController);
     
@@ -75,8 +80,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   // By default we use a Pigeon for our gyroscope. But if you use another gyroscope, like a NavX, you can change this.
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
-  private final Pigeon2 m_pigeon = new Pigeon2(DRIVETRAIN_PIGEON_ID, "rio");
-  // private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  public final Pigeon2 m_pigeon = new Pigeon2(DRIVETRAIN_PIGEON_ID, Constants.CANIVORE);
+  //public final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
   public final SwerveDriveOdometry m_odometer = new SwerveDriveOdometry(m_kinematics, Rotation2d.fromDegrees(0));
 
   // These are our modules. We initialize them in the constructor.
@@ -197,8 +202,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
     
     // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
     //SmartDashboard.putNumber("angle", -m_navx.getYaw());
-    //return Rotation2d.fromDegrees(-m_navx.getYaw()+90);
-    return Rotation2d.fromDegrees(m_pigeon.getYaw());
+    if(l_stick.getRawButton(1) || r_stick.getRawButton(1)){
+      return Rotation2d.fromDegrees(0);
+    } else {
+      return Rotation2d.fromDegrees(m_pigeon.getYaw());
+    }
+    
+    //return Rotation2d.fromDegrees(-m_navx.getYaw());
   }
 
   public Pose2d getPose() {
@@ -221,10 +231,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public void zeroTheWheels() {
-    m_frontLeftModule.set(0, FRONT_LEFT_MODULE_STEER_OFFSET);
-    m_frontRightModule.set(0, FRONT_RIGHT_MODULE_STEER_OFFSET);
-    m_backLeftModule.set(0, BACK_LEFT_MODULE_STEER_OFFSET);
-    m_backRightModule.set(0, BACK_RIGHT_MODULE_STEER_OFFSET);
+    /*
+    m_frontLeftModule.set(0, -FRONT_LEFT_MODULE_STEER_OFFSET);
+    m_frontRightModule.set(0, -FRONT_RIGHT_MODULE_STEER_OFFSET);
+    m_backLeftModule.set(0, -BACK_LEFT_MODULE_STEER_OFFSET);
+    m_backRightModule.set(0, -BACK_RIGHT_MODULE_STEER_OFFSET);
+    */
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -232,16 +244,21 @@ public class DriveTrainSubsystem extends SubsystemBase {
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+    m_odometer.update(getGyroscopeRotation(), states[0], states[1], states[2], states[3]);
+  
   }
 
   @Override
   public void periodic() {
-    /*
+    
     // james if you are feeling like a daredevil uncomment this out
+    /*
     if (m_chassisSpeeds.vxMetersPerSecond == 0 && m_chassisSpeeds.vyMetersPerSecond == 0 && m_chassisSpeeds.omegaRadiansPerSecond == 0) {
       zeroTheWheels();
     }
     */
+    SmartDashboard.putNumber("Pigeon YAW", m_pigeon.getYaw());
+    SmartDashboard.putString("Gyroscope Rotation", getGyroscopeRotation().toString());
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     setModuleStates(states);
   }

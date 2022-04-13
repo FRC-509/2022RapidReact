@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -24,21 +25,23 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
+        
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
+        
         RobotContainer.s_drivetrainSubsystem.drive(
-                new ChassisSpeeds(
-                    m_translationXSupplier.getAsDouble(),
-                    m_translationYSupplier.getAsDouble(),
-                    m_rotationSupplier.getAsDouble()
-                )
-                /*
+                // new ChassisSpeeds(
+                //     m_translationXSupplier.getAsDouble(),
+                //     m_translationYSupplier.getAsDouble(),
+                //     m_rotationSupplier.getAsDouble()
+                // )
+                
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                    m_translationXSupplier.getAsDouble(),
-                    m_translationYSupplier.getAsDouble(),
-                    m_rotationSupplier.getAsDouble(),
+                     m_translationXSupplier.getAsDouble(),
+                     m_translationYSupplier.getAsDouble(),
+                     m_rotationSupplier.getAsDouble(),
                     RobotContainer.s_drivetrainSubsystem.getGyroscopeRotation()
                 )
-                */
+                
         );
         
     }

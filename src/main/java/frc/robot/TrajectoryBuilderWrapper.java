@@ -6,8 +6,10 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.commands.HolonomicSwerveControllerCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class TrajectoryBuilderWrapper {
@@ -41,7 +43,11 @@ public class TrajectoryBuilderWrapper {
         return trajectory;
     }
 
-    public HolonomicSwerveControllerCommand getHolonomicSwerveControllerCommand() {
-        return new HolonomicSwerveControllerCommand(trajectory);
+    public Command getPathFollowingCommand() {
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> RobotContainer.s_drivetrainSubsystem.resetOdometry(getTrajectory().getInitialPose())),
+            getSwerveControllerCommand(),
+            new InstantCommand(() -> RobotContainer.s_drivetrainSubsystem.stopModules())
+        );
     }
 }

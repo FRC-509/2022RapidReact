@@ -4,6 +4,7 @@
 
 package frc.robot.autonomous;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -63,12 +64,15 @@ public class three_ball extends SequentialCommandGroup {
             new AimBot(),
             new WaitCommand(1.0)
           ),
+          //shoot spin up
+          new SequentialCommandGroup(
+            new ShooterCommand(()  -> true)
+          ).withTimeout(0.5),
           //shoot
-          new ParallelRaceGroup(
-            new ShooterCommand(()  -> 0.325d),
-            new IndexerCommand(),
-            new WaitCommand(2.5)
-          ),
+          new ParallelCommandGroup(
+            new ShooterCommand(()  -> true),
+            new IndexerCommand()
+          ).withTimeout(2),
           //backing up
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> 2.0d, () -> 0.0d, () -> 0.0d),
@@ -78,7 +82,7 @@ public class three_ball extends SequentialCommandGroup {
           //turn to next ball
           new ParallelRaceGroup(
             new DefaultDriveCommand(() -> 0.0d, () -> 0.0d, () -> -4.0d),
-            new WaitCommand(0.475)
+            new WaitCommand(0.465)
           ),
           //intake down
           new ParallelRaceGroup(
@@ -87,9 +91,9 @@ public class three_ball extends SequentialCommandGroup {
           ),
           //drive and intake
           new ParallelRaceGroup(
-            new DefaultDriveCommand(() -> -4.0d, () -> 0.375d, () -> 0.0d),
+            new DefaultDriveCommand(() -> -2.0d, () -> 0.35d, () -> 0.0d),
             new IntakeSpin(),
-            new WaitCommand(1)
+            new WaitCommand(1.2)
           ),
           //intake up
           new ParallelRaceGroup(
@@ -104,15 +108,14 @@ public class three_ball extends SequentialCommandGroup {
           //aim
           new ParallelRaceGroup(
             new AimBot(),
-            new WaitCommand(1.0)
+            new WaitCommand(1.5)
           ),
           //shoot
           //shot 3rd
-          new ParallelRaceGroup(
-            new ShooterCommand(()  -> 0.32d),
-            new IndexerCommand(),
-            new WaitCommand(2)
-          )
+          new ParallelCommandGroup(
+            new ShooterCommand(() -> true),
+            new IndexerCommand()
+          ).withTimeout(2)
           //this shit is experimental
           // //turn to next ball ( 180)
           // new ParallelRaceGroup(
