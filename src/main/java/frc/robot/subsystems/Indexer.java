@@ -24,12 +24,12 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
 
     double speed = 0;
-    if (LimeLightWrapper.getX() >=-2.5 && LimeLightWrapper.getX() <= 2.5 && LimeLightWrapper.hasTarget()){
+    if (LimeLightWrapper.getX() >=-1.5 && LimeLightWrapper.getX() <= 1.5 && LimeLightWrapper.hasTarget()){
       double y = LimeLightWrapper.getY();
       //speed = (-19.7654)*(y*y) + (281.237)*(y) + 14111.9;
-      speed = (-73.6142)*(y) + 14041.2;
+      speed = (-79.6142)*(y) + 15041.2;
     } else {
-      speed = 11800;
+      speed = 14800;
     }
     boolean wtf = false;
     SmartDashboard.putBoolean("bottom", bottomInput.get());

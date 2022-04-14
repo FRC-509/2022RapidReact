@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,14 +47,19 @@ public class ShooterSubsystem extends SubsystemBase {
       if (LimeLightWrapper.hasTarget()){
         double y = LimeLightWrapper.getY();
         //speed = (-19.7654)*(y*y) + (281.237)*(y) + 14111.9;
-        speed = (-74.6142)*(y) + 12041.2;
+        speed = (-80.9142)*(y) + 14041.2;
       } else {
-        speed = 11800;
+        speed = 14800;
       }
       SmartDashboard.putNumber("adfhajdsfksajdhflkjsahfdkjasdf", speed);
       speed *= 5.5;
+      
       motor.set(ControlMode.Velocity, speed);
       motor2.set(ControlMode.Velocity, -speed);
+      // PIDController shooterController = new PIDController(0.6, 0.2, 0.0);
+      // double shooterCommand = shooterController.calculate(motor.getSelectedSensorVelocity(), 0);
+      // shooterController.close();
+      // m_motorGroup.set(shooterCommand);
     }
   }
 }
