@@ -65,9 +65,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     LimeLightWrapper.turnON();
-    RobotContainer.s_drivetrainSubsystem.zeroGyroscope();
+    // SAVE CONFLICT
+    // RobotContainer.s_drivetrainSubsystem.zeroGyroscope();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
