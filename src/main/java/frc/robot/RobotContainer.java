@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autonomous.SixBallAuto;
+//import frc.robot.autonomous.SixBallAuto;
 import frc.robot.autonomous.five_ball;
 import frc.robot.autonomous.three_ball;
 import frc.robot.autonomous.two_ball;
@@ -83,9 +83,7 @@ public class RobotContainer {
     
     m_chooser.setDefaultOption("2-ball auto, use this", new two_ball());
     m_chooser.addOption("3-ball auto, use this if you dare", new three_ball());
-    m_chooser.addOption("5-ball auto, DO NOT USE unless THERE IS NO OTHER OPTION", new five_ball());
-    m_chooser.addOption("bruh moment no use", new new_five_ball());
-    m_chooser.addOption("paff weaveww owo", new SixBallAuto());
+
     SmartDashboard.putData(m_chooser);
     // Configure the button bindings
     configureButtonBindings();
@@ -125,7 +123,7 @@ public class RobotContainer {
     
     //RIGHT_STICK_BUTTON_1.whenHeld(new ShooterCommand(() -> ((l_stick.getRawAxis(3) + 1.0d)/2.0)));
     // Button 1 on the right stick must be held down to shoot.
-    SmartDashboard.putNumber("bruh value two", ((l_stick.getRawAxis(3)+1.0)/2.0));
+ //   SmartDashboard.putNumber("bruh value two", ((l_stick.getRawAxis(3)+1.0)/2.0));
     JoystickButton LEFT_STICK_BUTTON_2 = new JoystickButton(l_stick, 2);
     // LEFT_STICK_BUTTON_2.whenPressed(new IntakeDown());
     LEFT_STICK_BUTTON_2.whenHeld(new IntakeSpit());

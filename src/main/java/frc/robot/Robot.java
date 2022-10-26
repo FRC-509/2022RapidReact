@@ -47,8 +47,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    SmartDashboard.putNumber("bruh moment wheelly spind spin", RobotContainer.s_drivetrainSubsystem.m_odometer.getPoseMeters().getX());
-    SmartDashboard.putNumber("bruh moment wheelly spindsss spin", RobotContainer.s_drivetrainSubsystem.m_odometer.getPoseMeters().getY());
+   // SmartDashboard.putNumber("bruh moment wheelly spind spin", RobotContainer.s_drivetrainSubsystem.m_odometer.getPoseMeters().getX());
+   // SmartDashboard.putNumber("bruh moment wheelly spindsss spin", RobotContainer.s_drivetrainSubsystem.m_odometer.getPoseMeters().getY());
     CommandScheduler.getInstance().run();
   }
 
