@@ -24,6 +24,7 @@ public class two_ball extends SequentialCommandGroup {
   public two_ball() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    // todo: swap out the race-against-wait commands with timeouts.
     addCommands(
       //to make sure the auto ends
       new ParallelRaceGroup(

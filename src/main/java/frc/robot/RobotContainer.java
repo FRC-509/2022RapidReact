@@ -56,8 +56,8 @@ public class RobotContainer {
   public static final Elevator s_elevator = new Elevator();
   public static final DriveTrainSubsystem s_drivetrainSubsystem = new DriveTrainSubsystem();
 
-  public static final Joystick l_stick = new Joystick(1);
-  public static final Joystick r_stick = new Joystick(0);
+  public static final Joystick l_stick = new Joystick(0);
+  public static final Joystick r_stick = new Joystick(1);
 
   public static final GenericHID s_logiController = new GenericHID(2);
 
