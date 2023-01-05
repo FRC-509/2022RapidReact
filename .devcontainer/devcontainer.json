@@ -1,0 +1,39 @@
+{
+	"name": "FIRST Robotics Competition",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			// Update the VARIANT arg to pick a Java version: 8, 11, 17
+			// Append -bullseye or -buster to pin to an OS version.
+			// Use the -bullseye variants on local arm64/Apple Silicon.
+			"VARIANT": "17-bullseye",
+			// Options
+			"INSTALL_MAVEN": "false",
+			"MAVEN_VERSION": "3.8.5",
+			"INSTALL_GRADLE": "true"
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"maven.executable.path": "/usr/local/sdkman/candidates/maven/current/bin/mvn"
+			},
+			// Set *pre-installed* extensions on container create.
+			"extensions": [
+				"wpilibsuite.vscode-wpilib",
+				"vscjava.vscode-java-pack",
+				"ms-vscode.cpptools-extension-pack"
+			]
+		},
+		"codespaces": {
+			"openFiles": [
+				"src/main/cpp/Robot.cpp"
+			]
+		}
+	},
+	"remoteUser": "vscode"
+}
